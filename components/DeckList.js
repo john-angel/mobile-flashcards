@@ -1,16 +1,35 @@
-import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet,TouchableOpacity } from 'react-native'
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import Deck from './Deck'
+import NewDeck from './NewDeck'
 
-class DeckList extends Component{
-    
-    render(){
-        return(
-            <View>
-                <Text>DeckList</Text>
-            </View>
+const Home = ({ navigation }) => (
+    <View style={styles.container}>
+        <Text>Deck link</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('NewDeck')}>
+            <Text>Add</Text>
+        </TouchableOpacity>
+    </View>
+);
 
-        )
+const DeckList = createBottomTabNavigator({
+    Decks: {
+        screen: Home
+    },
+    NewDeck: {
+        screen: NewDeck
     }
-}
+})
 
-export default DeckList;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+});
+
+export default createAppContainer(DeckList);
+

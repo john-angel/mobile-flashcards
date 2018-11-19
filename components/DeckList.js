@@ -1,14 +1,12 @@
 import React from 'react'
 import { View, Text, StyleSheet,TouchableOpacity } from 'react-native'
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import Deck from './Deck'
+import { createBottomTabNavigator } from 'react-navigation';
 import NewDeck from './NewDeck'
 
 const Home = ({ navigation }) => (
     <View style={styles.container}>
-        <Text>Deck link</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('NewDeck')}>
-            <Text>Add</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Deck')}>
+            <Text>List of Decks</Text>
         </TouchableOpacity>
     </View>
 );
@@ -19,7 +17,7 @@ const DeckList = createBottomTabNavigator({
     },
     NewDeck: {
         screen: NewDeck
-    }
+    }  
 })
 
 const styles = StyleSheet.create({
@@ -31,5 +29,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default createAppContainer(DeckList);
+export default DeckList;
 

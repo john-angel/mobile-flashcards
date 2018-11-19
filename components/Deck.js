@@ -1,21 +1,17 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import {createStackNavigator} from 'react-navigation'
-import Quiz from './Quiz'
-import NewQuestion from './NewQuestion'
 
-class DeckHome extends Component{
-    // onPress={() => this.props.navigation.navigate('Quiz')}
-    //onPress={() => this.props.navigation.navigate('NewQuestion')}
+class Deck extends Component{
+   
     render(){
         return(
             <View>
                 <Text>Deck name</Text>
                 <Text># cards</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Quiz')}>
                     <Text>Start Quiz</Text>
                 </TouchableOpacity>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('NewQuestion')}>
                     <Text>Add question</Text>
                 </TouchableOpacity>
 
@@ -24,23 +20,5 @@ class DeckHome extends Component{
         )
     }
 }
-
-const Deck = createStackNavigator({
-    Home: {
-        screen: DeckHome
-    },
-    Quiz: {
-        screen: Quiz,
-        navigationOptions: {
-            //header: null           
-        }
-    },
-    NewQuestion: {
-        screen: NewQuestion,
-        navigationOptions: {
-            //header: null         
-        }
-    }
-})
 
 export default Deck;

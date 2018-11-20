@@ -1,4 +1,3 @@
-import React from 'react'
 import {createStackNavigator, createAppContainer} from 'react-navigation'
 import DeckList from './DeckList'
 import Deck from './Deck'

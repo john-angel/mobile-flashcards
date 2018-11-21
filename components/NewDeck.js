@@ -25,8 +25,8 @@ class NewDeck extends Component{
 
     showAllDecks = () => {
         getDecks().then((decks)=>{
-            console.log(`Decks: ${decks}`)
-            this.setState({text:`Decks: ${decks}`})
+            console.log('Decks:', decks)
+            this.setState({text:`Decks: ${JSON.stringify(decks)}`})
         })
     }
 

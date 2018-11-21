@@ -8,11 +8,11 @@ export function saveDeckTitle(title) {
 }
 
 export function getDecks(){
-    return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
+    return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY).then((decks) => JSON.parse(decks))
 }
 
 export function getDeck(id){    
-    return getDecks().then((result) => JSON.parse(result)[id])
+    return getDecks().then((result) => result[id])
 }
 
 export function removeDecks(){

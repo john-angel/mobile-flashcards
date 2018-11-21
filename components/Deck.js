@@ -4,9 +4,10 @@ import { View, Text, TouchableOpacity } from 'react-native'
 class Deck extends Component{
    
     render(){
+        const id = this.props.navigation.getParam('id', '0')
         return(
             <View>
-                <Text>Deck name</Text>
+                <Text>{id}</Text>
                 <Text># cards</Text>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Quiz')}>
                     <Text>Start Quiz</Text>

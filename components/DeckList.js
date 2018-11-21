@@ -25,7 +25,7 @@ class Decks extends Component {
     
     getDeckComponent = (deck)=> {
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck')}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck',{id:deck.item.title})}>
                 <Text>{deck.item.title}</Text>
             </TouchableOpacity>
         )        

@@ -3,6 +3,8 @@ import DeckList from './DeckList'
 import Deck from './Deck'
 import Quiz from './Quiz'
 import NewQuestion from './NewQuestion'
+import Question from './Question'
+import Result from './Result'
 
 
 const Stack = createStackNavigator({
@@ -18,7 +20,16 @@ const Stack = createStackNavigator({
     },
     NewQuestion: {
         screen: NewQuestion
+    },
+    Question: {
+        screen: Question
+    },
+    Result: {
+        screen: Result
     }
+},
+{
+  initialRouteName: 'DeckList',
 })
 
 export default createAppContainer(Stack);

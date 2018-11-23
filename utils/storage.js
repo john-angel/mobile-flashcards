@@ -19,12 +19,39 @@ export function removeDecks(){
     return AsyncStorage.removeItem(FLASHCARDS_STORAGE_KEY)
 }
 
+export function saveQuestion(deckId,question,answer){
+    console.log('Saving question for deck', deckId, '. Question:', question, ' - Answer:', answer)
+    
+    getDecks().then((decks) =>{
+        deck = decks[deckId]
+        questionObj = buildQuestion(question,answer)
+        deck.questions.push(questionObj)
+        console.log('Deck updated:', JSON.stringify(deck))
+        console.log('Decks updated:', decks);
+        AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks))
+
+    })
+    
+}
+
+function updateDeck(deck){
+
+
+}
+
 function buildDeck(key){
     return {
         [key]: {
             title:key,
             questions:[]
         }
+    }
+}
+
+function buildQuestion(question,answer){
+    return {
+        question,
+        answer
     }
 }
 

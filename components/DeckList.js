@@ -14,8 +14,9 @@ class Decks extends Component {
 
         getDecks().then((data)=>{
             decksArray = Object.keys(data).map(deck => data[deck]);
+            console.log('Decks to display:', decksArray)
             this.setState({decks:decksArray})
-        })
+        }).catch(() => (console.log('No decks')))
 
     }
 
@@ -24,8 +25,9 @@ class Decks extends Component {
     } 
     
     getDeckComponent = (deck)=> {
+        console.log('Deck to display:', deck)
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck',{id:deck.item.title})}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck',{id:deck.item.title,cards:deck.item.questions.length})}>
                 <Text>{deck.item.title}</Text>
             </TouchableOpacity>
         )        

@@ -84,7 +84,7 @@ class Card extends Component{
                 (
                     <View>
                         <Text>Last question</Text>
-                        <Button title='Result' onPress={() => this.props.navigation.navigate('Result')} />
+                        <Button title='Result' onPress={() => this.props.navigation.navigate('Result',{id:this.state.deckId})} />
                     </View>
                 )                    
                 :

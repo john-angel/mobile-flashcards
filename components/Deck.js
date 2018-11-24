@@ -12,7 +12,7 @@ class Deck extends Component{
                 <Text>Deck {id}</Text>
                 <Text>{cards} cards</Text>
                 {/*Enable going to the quiz if there're cards*/}
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Question',{id:id,question:0})}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Card',{id:id,question:0})}>
                     <Text>Start Quiz</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('NewQuestion',{id:id})}>

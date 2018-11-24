@@ -34,9 +34,20 @@ export function saveQuestion(deckId,question,answer){
     
 }
 
-function updateDeck(deck){
+export function saveOption(deckId,questionId,option){
+    console.log('Saving option for deck', deckId, '. questionId:', questionId, ' - Option:', option)
 
-
+    getDecks().then((decks) =>{
+        deck = decks[deckId]
+        question = deck.questions[questionId]
+        console.log('Question to update', question)
+        question.option = option
+        //questionObj = buildQuestion(question,answer,option)
+        //deck.questions.push(questionObj)
+        console.log('Deck updated:', JSON.stringify(deck))
+        console.log('Decks updated:', decks);
+        AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks))
+    })
 }
 
 function buildDeck(key){
@@ -48,10 +59,11 @@ function buildDeck(key){
     }
 }
 
-function buildQuestion(question,answer){
+function buildQuestion(question,answer,option = ''){
     return {
         question,
-        answer
+        answer,
+        option
     }
 }
 
@@ -65,10 +77,12 @@ function buildQuestion(question,answer){
         {
           question: 'What is React?',
           answer: 'A library for managing user interfaces'
+          option: 'correct'
         },
         {
           question: 'Where do you make Ajax requests in React?',
           answer: 'The componentDidMount lifecycle event'
+          option: 'incorrect'
         }
       ]
     },
@@ -78,6 +92,7 @@ function buildQuestion(question,answer){
         {
           question: 'What is a closure?',
           answer: 'The combination of a function and the lexical environment within which that function was declared.'
+          option: ''
         }
       ]
     }

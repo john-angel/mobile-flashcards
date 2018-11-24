@@ -3,7 +3,7 @@ import DeckList from './DeckList'
 import Deck from './Deck'
 import Quiz from './Quiz'
 import NewQuestion from './NewQuestion'
-import Question from './Question'
+import Card from './Card'
 import Result from './Result'
 
 
@@ -23,8 +23,8 @@ const Stack = createStackNavigator({
     NewQuestion: {
         screen: NewQuestion
     },
-    Question: {
-        screen: Question
+    Card: {
+        screen: Card
     },
     Result: {
         screen: Result

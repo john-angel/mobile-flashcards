@@ -14,6 +14,7 @@ class NewQuestion extends Component{
             <View style={styles.container}>
                 <TextInput placeholder="Question..." onChangeText={(question) => this.question = question}/>
                 <TextInput placeholder="Answer..." onChangeText={(answer) => this.answer = answer}/>
+                {/*Enable only if there is a question and an answer */}
                 <Button title='Save' onPress={this.save}/>
             </View>
 

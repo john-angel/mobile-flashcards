@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import { View, Text, Button } from 'react-native'
-import {getDeck} from '../utils/storage'
+import {getDeck, saveOption} from '../utils/storage'
 
-class Question extends Component{
+class Card extends Component{
 
     state = {
         question:'',
         answer:'',
         id:'',
         deckId:'',
-        lastQuestion: false
+        lastQuestion: false,
+        showAnswer: false
     }
 
     componentDidMount(){
@@ -19,12 +20,14 @@ class Question extends Component{
         console.log('Question id:', questionId)
         
         getDeck(id).then((deck) => {
-            //console.log('Deck to evaluate', deck)
+            console.log('Deck to evaluate', deck)
             this.questionsLength = deck.questions.length
             console.log('# questions:', deck.questions.length)
 
             question = deck.questions[questionId].question
             answer = deck.questions[questionId].answer
+            console.log('Question:', question)
+            console.log('Answer:', answer)
             
             this.setState({
                 question:question,
@@ -39,21 +42,43 @@ class Question extends Component{
     }
 
     next = () => {
-        console.log('Next question:', this.state.id + 1)
-        nextQuestion = this.props.navigation.push('Question',{
+        console.log('Next card:', this.state.id + 1)
+        nextQuestion = this.props.navigation.push('Card',{
                 id:this.state.deckId,
                 question:this.state.id + 1
             }
         )
 
     }
+
+    onCorrect = () => {
+        console.log('onCorrect')
+        saveOption(this.state.deckId,this.state.id,'correct')
+    }
+    onIncorrect = () => {
+        console.log('onIncorrect')
+        saveOption(this.state.deckId,this.state.id,'inCorrect')
+    }
+    
     
     render(){
         return(
             <View>
                 <Text>Question for deck</Text>
                 <Text>{this.state.question}</Text>
-                <Text>{this.state.answer}</Text>
+                {
+                    this.state.showAnswer === true ? (
+                        <View>
+                            <Text>{this.state.answer}</Text>
+                            <Button title='Correct' onPress={this.onCorrect}></Button>
+                            <Button title='Incorrect' onPress={this.onIncorrect}></Button>
+                        </View>                        
+                    )
+                    : (
+                        <Button title="Show answer" onPress={() => this.setState({showAnswer:true})}></Button>
+                    )                                    
+                }
+                
                 <Button disabled={this.state.lastQuestion} title='Next' onPress={this.next}/>
                 {this.questionsLength === this.state.id + 1 ?
                 (
@@ -71,4 +96,4 @@ class Question extends Component{
     }
 }
 
-export default Question;
+export default Card;

@@ -5,6 +5,7 @@ const FLASHCARDS_STORAGE_KEY = 'Udacity:mobileFlashcards'
 export function saveDeckTitle(title) {
     const deck = buildDeck(title)
     return AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(deck))
+    .then(() => deck)
 }
 
 export function getDecks(){
@@ -50,7 +51,7 @@ export function saveOption(deckId,questionId,option){
     })
 }
 
-function buildDeck(key){
+ function buildDeck(key){
     return {
         [key]: {
             title:key,

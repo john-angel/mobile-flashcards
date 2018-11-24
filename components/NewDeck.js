@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { View, TextInput, Button,Text } from 'react-native'
 import {saveDeckTitle,getDecks,getDeck, removeDecks} from '../utils/storage'
+import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
+import { saveDeck } from '../actions'
 
 class NewDeck extends Component{
 
@@ -10,10 +13,16 @@ class NewDeck extends Component{
     }
 
     save = () => {
-        saveDeckTitle(this.state.name).then(()=>{
-            console.log('Deck', this.state.name, 'saved')
-            this.setState({text:`${this.state.name} saved!`})         
+        saveDeckTitle(this.state.name).then((deck)=>{
+            console.log('Deck', deck, 'saved')
+            this.setState({text:`${this.state.name} saved!`})
+            this.props.dispatch(saveDeck(deck))
+            this.toHome();
         })
+    }
+
+    toHome = () => {
+        this.props.navigation.dispatch(NavigationActions.back({key: 'NewDeck'}))
     }
 
     deleteDecks = () => {
@@ -54,4 +63,4 @@ class NewDeck extends Component{
     }
 }
 
-export default NewDeck;
+export default connect()(NewDeck);

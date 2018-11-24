@@ -3,6 +3,7 @@ import { View, Text, StyleSheet,TouchableOpacity,FlatList } from 'react-native'
 import { createBottomTabNavigator } from 'react-navigation';
 import {getDecks} from '../utils/storage'
 import NewDeck from './NewDeck'
+import Notification from './Notification'
 
 class Decks extends Component {
 
@@ -48,6 +49,9 @@ const DeckList = createBottomTabNavigator({
     },
     NewDeck: {
         screen: NewDeck
+    },
+    Notification: {
+        screen: Notification
     }  
 })
 

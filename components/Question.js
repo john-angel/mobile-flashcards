@@ -53,7 +53,7 @@ class Question extends Component{
             <View>
                 <Text>Question for deck</Text>
                 <Text>{this.state.question}</Text>
-                <Text>{this.state.answer}</Text>                
+                <Text>{this.state.answer}</Text>
                 <Button disabled={this.state.lastQuestion} title='Next' onPress={this.next}/>
                 {this.questionsLength === this.state.id + 1 ?
                 (

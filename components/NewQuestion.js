@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, Button } from 'react-native'
+import { View, TextInput, Button, StyleSheet } from 'react-native'
 import {saveQuestion} from '../utils/storage'
 
 class NewQuestion extends Component{
@@ -11,7 +11,7 @@ class NewQuestion extends Component{
 
     render(){
         return(
-            <View>
+            <View style={styles.container}>
                 <TextInput placeholder="Question..." onChangeText={(question) => this.question = question}/>
                 <TextInput placeholder="Answer..." onChangeText={(answer) => this.answer = answer}/>
                 <Button title='Save' onPress={this.save}/>
@@ -20,5 +20,15 @@ class NewQuestion extends Component{
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems:'center'
+
+    },
+});
+
 
 export default NewQuestion;

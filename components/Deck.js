@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Animated } from 'react-native'
+import { Text, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import TextButton from './TextButton'
 

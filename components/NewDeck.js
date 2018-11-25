@@ -23,18 +23,11 @@ class NewDeck extends Component{
         this.props.navigation.navigate('Deck',{id:this.state.name})
     }
 
-    deleteDecks = () => {
-        removeDecks().catch((error) => {
-            console.log(error)
-        })
-    }
-
     render(){
         return(
             <View style={styles.container}>
                 <TextInput style={styles.input} placeholder="Deck name..." onChangeText={(name) => this.setState({name})}/>
                 <TextButton disabled={this.state.name.length > 0 ? false : true} type={'yes'}style={{padding: 10}} onPress={this.save}>Create Deck</TextButton>
-                <Button title='Delete decks' onPress={this.deleteDecks}/>
             </View>
         )
     }

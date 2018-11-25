@@ -17,6 +17,7 @@ class NewQuestion extends Component{
         saveQuestion(id,this.state.question,this.state.answer)
         .then((question) => {
             this.props.dispatch(addQuestion(id,question))
+            this.setState({question:'', answer:''})
         })       
     }
    
@@ -24,8 +25,8 @@ class NewQuestion extends Component{
         const disableSaving = this.state.question.length > 0 && this.state.answer.length > 0 ? false : true
         return(
             <View style={styles.container}>
-                <TextInput style={styles.input} placeholder="Question..." onChangeText={(question) => this.setState({question})}/>
-                <TextInput style={styles.input} placeholder="Answer..." onChangeText={(answer) => this.setState({answer})}/>
+                <TextInput defaultValue={this.state.question} style={styles.input} placeholder="Question..." onChangeText={(question) => this.setState({question})}/>
+                <TextInput defaultValue={this.state.answer} style={styles.input} placeholder="Answer..." onChangeText={(answer) => this.setState({answer})}/>
                 <TextButton disabled={disableSaving} type={'yes'} onPress={this.save}>Submit</TextButton>
             </View>
         )

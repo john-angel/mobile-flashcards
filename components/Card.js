@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
@@ -12,7 +12,8 @@ class Card extends Component{
         answer:'',
         lastQuestion: false,
         showAnswer: false,
-        pendingAnswer:true
+        pendingAnswer:true,
+        fadeAnim: new Animated.Value(0)
     }
 
     componentDidMount(){
@@ -60,22 +61,33 @@ class Card extends Component{
         })
     }
 
+    onShowAnswer = () => {
+        this.setState({showAnswer:true})
+        Animated.timing(                  // Animate over time
+            this.state.fadeAnim,            // The animated value to drive
+            {
+              toValue: 1,                   // Animate to opacity: 1 (opaque)
+              duration: 500,              // Make it take a while
+            }
+        ).start(); 
+    }
     onResult = () => this.props.navigation.navigate('Result',{id:this.props.deckId})    
 
     render(){
+        let { fadeAnim } = this.state;
         return(
             <View style={styles.container}>
                 <Text style={styles.text}>{this.state.question}</Text>
                 {
                     this.state.showAnswer === true ? (
-                        <View>
+                        <Animated.View style={{opacity:fadeAnim}}>
                             <Text style={styles.text}>{this.state.answer}</Text>
                             <TextButton type={'yes'} onPress={this.onCorrect}>Correct</TextButton>
                             <TextButton type={'no'} onPress={this.onIncorrect}>Incorrect</TextButton>
-                        </View>                        
+                        </Animated.View>                        
                     )
                     : (
-                        <TextButton type={'standard'} onPress={() => this.setState({showAnswer:true})}>Show answer</TextButton>
+                        <TextButton type={'standard'} onPress={this.onShowAnswer}>Show answer</TextButton>
                     )                                    
                 }
                 {this.questionsLength === this.props.questionId + 1 ?
@@ -87,7 +99,7 @@ class Card extends Component{
                 )                    
                 :
                     <View>
-                        <TextButton disabled={this.state.pendingAnswer} type={'yes'} onPress={this.next}>Next</TextButton>
+                        <TextButton disabled={this.state.pendingAnswer} type={'standard'} onPress={this.next}>Next</TextButton>
                         <Text>{this.questionsLength - (this.props.questionId + 1)} remaining</Text>
                     </View>
                 }                

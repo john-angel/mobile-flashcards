@@ -15,7 +15,7 @@ class Deck extends Component{
                 <Text style={styles.text}>Deck {deckId}</Text>
                 <Text style={styles.text}>{this.props.numberOfQuestions} questions</Text>
                 <TextButton disabled={disableQuiz} type={'standard'} onPress={() => this.props.navigation.navigate('Card',{id:deckId,question:0})}>Start Quiz</TextButton>                
-                <TextButton type={'standard'} onPress={() => this.props.navigation.navigate('NewQuestion',{id:deckId})}>Add question</TextButton>                
+                <TextButton type={'standard'} onPress={() => this.props.navigation.navigate('NewQuestion',{id:deckId})}>Add Card</TextButton>                
             </View>
 
         )

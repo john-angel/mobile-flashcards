@@ -26,7 +26,7 @@ class NewQuestion extends Component{
             <View style={styles.container}>
                 <TextInput style={styles.input} placeholder="Question..." onChangeText={(question) => this.setState({question})}/>
                 <TextInput style={styles.input} placeholder="Answer..." onChangeText={(answer) => this.setState({answer})}/>
-                <TextButton disabled={disableSaving} type={'yes'} onPress={this.save}>Save</TextButton>
+                <TextButton disabled={disableSaving} type={'yes'} onPress={this.save}>Submit</TextButton>
             </View>
         )
     }

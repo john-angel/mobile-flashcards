@@ -10,8 +10,6 @@ class Card extends Component{
     state = {
         question:'',
         answer:'',
-        id:'',
-        deckId:'',
         lastQuestion: false,
         showAnswer: false
     }
@@ -28,13 +26,9 @@ class Card extends Component{
             this.setState({
                 question:question,
                 answer:answer,
-                id: questionId,
-                deckId,
                 lastQuestion: deck.questions.length === questionId + 1
             })
-
-        })
-        
+        })        
     }
 
     next = () => {
@@ -64,12 +58,11 @@ class Card extends Component{
     render(){
         return(
             <View style={styles.container}>
-                <Text>Question for deck</Text>
-                <Text>{this.state.question}</Text>
+                <Text style={styles.text}>{this.state.question}</Text>
                 {
                     this.state.showAnswer === true ? (
                         <View>
-                            <Text>{this.state.answer}</Text>
+                            <Text style={styles.text}>{this.state.answer}</Text>
                             <TextButton type={'yes'} onPress={this.onCorrect}>Correct</TextButton>
                             <TextButton type={'no'} onPress={this.onIncorrect}>Incorrect</TextButton>
                         </View>                        
@@ -78,7 +71,7 @@ class Card extends Component{
                         <TextButton type={'standard'} onPress={() => this.setState({showAnswer:true})}>Show answer</TextButton>
                     )                                    
                 }
-                {this.questionsLength === this.state.id + 1 ?
+                {this.questionsLength === this.props.questionId + 1 ?
                 (
                     <View>                        
                         <TextButton type={'standard'} onPress={this.onResult}>Result</TextButton>
@@ -88,7 +81,7 @@ class Card extends Component{
                 :
                     <View>
                         <TextButton disabled={this.state.lastQuestion} type={'yes'} onPress={this.next}>Next</TextButton>
-                        <Text>{this.questionsLength - (this.state.id + 1)} remaining</Text>
+                        <Text>{this.questionsLength - (this.props.questionId + 1)} remaining</Text>
                     </View>
                 }                
             </View>
@@ -103,6 +96,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems:'center'
     },
+    text:{
+        fontSize:19,
+        textAlign:'center'
+    }
 });
 
 

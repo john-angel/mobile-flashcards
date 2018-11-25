@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import {getDeck} from '../utils/storage'
+import TextButton from './TextButton'
 
 class Result extends Component{
 
@@ -33,12 +34,21 @@ class Result extends Component{
     render(){  
 
         return(
-            <View>
-                <Text>Result for deck {this.props.navigation.getParam('id', '0')}</Text>
-                <Text>{this.state.result} questions correct out of {this.state.numberQuestions}</Text>
+            <View style={styles.container}>
+                <Text style={styles.text}>Result for deck {this.props.navigation.getParam('id', '0')}</Text>
+                <Text style={styles.text}>{this.state.result} questions correct out of {this.state.numberQuestions}</Text>
             </View>
         )
     }
 }
-
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems:'center'
+    },
+    text: {
+        fontSize:19
+    }
+})
 export default Result;

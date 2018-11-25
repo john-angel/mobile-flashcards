@@ -17,10 +17,9 @@ class Card extends Component{
     }
 
     componentDidMount(){
-        const id = this.props.navigation.getParam('id', '0')
-        const questionId = this.props.navigation.getParam('question', '0')
+        const {deckId, questionId} = this.props
         
-        getDeck(id).then((deck) => {
+        getDeck(deckId).then((deck) => {
             this.questionsLength = deck.questions.length
 
             question = deck.questions[questionId].question
@@ -30,7 +29,7 @@ class Card extends Component{
                 question:question,
                 answer:answer,
                 id: questionId,
-                deckId: id,
+                deckId,
                 lastQuestion: deck.questions.length === questionId + 1
             })
 
@@ -40,29 +39,27 @@ class Card extends Component{
 
     next = () => {
         nextQuestion = this.props.navigation.push('Card',{
-                id:this.state.deckId,
-                question:this.state.id + 1
+                id:this.props.deckId,
+                question:this.props.questionId + 1
             }
         )
     }
 
-    onCorrect = () => {
-        const deckId = this.props.navigation.getParam('id', '0')
-        const questionId = this.props.navigation.getParam('question', '0')
+    onCorrect = () => {        
+        const {deckId, questionId} = this.props
 
-        saveOption(this.state.deckId,this.state.id,'correct')
+        saveOption(deckId,questionId,'correct')
         .then((option) => this.props.dispatch(addAnswerSelected(deckId,questionId,option)))
     }
 
     onIncorrect = () => {
-        const deckId = this.props.navigation.getParam('id', '0')
-        const questionId = this.props.navigation.getParam('question', '0')
+        const {deckId, questionId} = this.props
 
-        saveOption(this.state.deckId,this.state.id,'inCorrect')
+        saveOption(deckId,questionId,'inCorrect')
         .then((option) => this.props.dispatch(addAnswerSelected(deckId,questionId,option)))
     }
 
-    onResult = () => this.props.navigation.navigate('Result',{id:this.state.deckId})    
+    onResult = () => this.props.navigation.navigate('Result',{id:this.props.deckId})    
 
     render(){
         return(
@@ -81,16 +78,18 @@ class Card extends Component{
                         <TextButton type={'standard'} onPress={() => this.setState({showAnswer:true})}>Show answer</TextButton>
                     )                                    
                 }
-                <TextButton disabled={this.state.lastQuestion} type={'yes'} onPress={this.next}>Next</TextButton>
                 {this.questionsLength === this.state.id + 1 ?
                 (
-                    <View>
-                        <Text>Last question</Text>
+                    <View>                        
                         <TextButton type={'standard'} onPress={this.onResult}>Result</TextButton>
+                        <Text>Last question</Text>
                     </View>
                 )                    
                 :
-                    <Text>{this.questionsLength - (this.state.id + 1)} remaining</Text>
+                    <View>
+                        <TextButton disabled={this.state.lastQuestion} type={'yes'} onPress={this.next}>Next</TextButton>
+                        <Text>{this.questionsLength - (this.state.id + 1)} remaining</Text>
+                    </View>
                 }                
             </View>
 
@@ -106,4 +105,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export default connect()(Card);
+
+function mapStateToProps(state,props) {
+    console.log('mapStateToProps Card - state', state)
+    
+    const deckId = props.navigation.getParam('id', '0')
+    const questionId = props.navigation.getParam('question', '0')   
+
+    return{
+        deckId,
+        questionId
+    }
+}
+
+export default connect(mapStateToProps)(Card);

@@ -17,7 +17,7 @@ function decks(state = {}, action) {
                 ...state,
                 ...action.decks,
             } 
-            console.log('Reducer decks', newState)
+            console.log('Reducer SAVE_DECKS', newState)
             return newState
         case SAVE_DECK:
             return {
@@ -27,7 +27,6 @@ function decks(state = {}, action) {
         case ADD_QUESTION:
             const { deckId,question } = action
             tempState = Object.keys(state).length === 0 ? initialState(deckId): state
-            console.log('TempState', tempState)
             newState = {
                     ...tempState,                
                     [deckId]:{
@@ -35,7 +34,7 @@ function decks(state = {}, action) {
                         questions:tempState[deckId].questions.concat([question])
                     }
                 } 
-            console.log('State updated with new question:', newState)
+            console.log('Reducer ADD_QUESTION', newState)
             return newState
         case ADD_ANSWER_SELECTED:
             const { answerSelected } = action
@@ -44,10 +43,19 @@ function decks(state = {}, action) {
                 ...state,                
                 [action.deckId]:{
                     ...state[action.deckId],
-                    questions:state[action.deckId].questions[action.questionId].option = answerSelected
+                    questions:state[action.deckId].questions.map((item,index) => {
+                        if(index !== action.questionId){                            
+                            return item
+                        }else{
+                            return {
+                                ...item,
+                                option:answerSelected
+                            }
+                        }
+                    })
                 }
             } 
-            console.log('State updated with new answer selected:', newState)
+            console.log('Reducer ADD_ANSWER_SELECTED', newState)
             return newState
                  
         default:

@@ -28,7 +28,7 @@ class Deck extends Component{
 function mapStateToProps(state,props) {
     
     const deckId = props.navigation.getParam('id', '0')
-    console.log(`mapStateToProps - Deck Deckid ${deckId} - state`, state)
+    console.log(`mapStateToProps - Deck. Deckid ${deckId} - state`, state)
     return{
         deckId,
         questions:state[deckId].questions.length,

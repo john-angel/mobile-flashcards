@@ -6,9 +6,6 @@ import NewQuestion from './NewQuestion'
 import Card from './Card'
 import Result from './Result'
 
-
-
-
 const Stack = createStackNavigator({
     DeckList: {
         screen: DeckList

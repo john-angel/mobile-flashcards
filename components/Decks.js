@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { View, Text, StyleSheet,TouchableOpacity,FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import { saveDecks } from '../actions'
+import { saveDecks } from '../actions/decks'
 import {getDecks} from '../utils/storage'
 import { AppLoading} from 'expo'
 
@@ -51,9 +51,11 @@ class Decks extends Component {
     }
 }
 
-function mapStateToProps(decks) {
+function mapStateToProps(state) {
+    console.log('mapStateToProps Decks - state', state)
+    
     return{
-        decks
+        decks:state
     }
 }
 

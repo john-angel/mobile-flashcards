@@ -3,7 +3,7 @@ import { View, TextInput, Button,Text } from 'react-native'
 import {saveDeckTitle,getDecks,getDeck, removeDecks} from '../utils/storage'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
-import { saveDeck } from '../actions'
+import { saveDeck } from '../actions/decks'
 
 class NewDeck extends Component{
 
@@ -14,7 +14,6 @@ class NewDeck extends Component{
 
     save = () => {
         saveDeckTitle(this.state.name).then((deck)=>{
-            console.log('Deck', deck, 'saved')
             this.setState({text:`${this.state.name} saved!`})
             this.props.dispatch(saveDeck(deck))
             this.toHome();
@@ -34,15 +33,13 @@ class NewDeck extends Component{
 
     showAllDecks = () => {
         getDecks().then((decks)=>{
-            console.log('Decks:', decks)
-            this.setState({text:`Decks: ${JSON.stringify(decks)}`})
+            this.setState({text:`${JSON.stringify(decks)}`})
         })
     }
 
     showDeck = () => {
         getDeck(this.state.name).then((deck)=>{
-            console.log(`Deck ${this.state.name} ${deck.title}`)
-            this.setState({text:`Deck ${this.state.name} ${JSON.stringify(deck)}`})
+            this.setState({text:`${this.state.name} ${JSON.stringify(deck)}`})
         })        
     }
     

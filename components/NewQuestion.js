@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import { View, TextInput, Button, StyleSheet } from 'react-native'
 import {saveQuestion} from '../utils/storage'
+import { connect } from 'react-redux'
+import { addQuestion } from '../actions/questions'
 
 class NewQuestion extends Component{
     
     save = () => {
         const id = this.props.navigation.getParam('id', '0')
         saveQuestion(id,this.question,this.answer)
+        .then((question) => {
+            this.props.dispatch(addQuestion(id,question))
+        })       
     }
 
     render(){
@@ -32,4 +37,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default NewQuestion;
+export default connect()(NewQuestion);

@@ -33,7 +33,7 @@ class NewDeck extends Component{
         return(
             <View style={styles.container}>
                 <TextInput style={styles.input} placeholder="Deck name..." onChangeText={(name) => this.setState({name})}/>
-                <TextButton disabled={this.state.name.length > 0 ? false : true} style={{padding: 10}} onPress={this.save}>Save</TextButton>
+                <TextButton disabled={this.state.name.length > 0 ? false : true} type={'yes'}style={{padding: 10}} onPress={this.save}>Save</TextButton>
                 <Button title='Delete decks' onPress={this.deleteDecks}/>
             </View>
         )

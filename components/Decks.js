@@ -65,6 +65,7 @@ export default connect(mapStateToProps)(Decks)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        fontSize:19,
         backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems:'center'

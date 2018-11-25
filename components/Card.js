@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
+import TextButton from './TextButton'
 
 class Card extends Component{
 
@@ -71,31 +72,30 @@ class Card extends Component{
         .then((option) => this.props.dispatch(addAnswerSelected(deckId,questionId,option)))
     }
     
-    
+
     render(){
         return(
-            <View>
+            <View style={styles.container}>
                 <Text>Question for deck</Text>
                 <Text>{this.state.question}</Text>
                 {
                     this.state.showAnswer === true ? (
                         <View>
                             <Text>{this.state.answer}</Text>
-                            <Button title='Correct' onPress={this.onCorrect}></Button>
-                            <Button title='Incorrect' onPress={this.onIncorrect}></Button>
+                            <TextButton type={'yes'} onPress={this.onCorrect}>Correct</TextButton>
+                            <TextButton type={'no'} onPress={this.onIncorrect}>Incorrect</TextButton>
                         </View>                        
                     )
                     : (
-                        <Button title="Show answer" onPress={() => this.setState({showAnswer:true})}></Button>
+                        <TextButton type={'standard'} onPress={() => this.setState({showAnswer:true})}>Show answer</TextButton>
                     )                                    
                 }
-                
-                <Button disabled={this.state.lastQuestion} title='Next' onPress={this.next}/>
+                <TextButton disabled={this.state.lastQuestion} type={'yes'} onPress={this.next}>Next</TextButton>
                 {this.questionsLength === this.state.id + 1 ?
                 (
                     <View>
                         <Text>Last question</Text>
-                        <Button title='Result' onPress={() => this.props.navigation.navigate('Result',{id:this.state.deckId})} />
+                        <TextButton type={'standard'} onPress={() => this.props.navigation.navigate('Result',{id:this.state.deckId})}>Result</TextButton>
                     </View>
                 )                    
                 :
@@ -106,5 +106,13 @@ class Card extends Component{
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems:'center'
+    },
+});
 
 export default connect()(Card);

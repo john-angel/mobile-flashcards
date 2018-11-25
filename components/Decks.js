@@ -24,10 +24,9 @@ class Decks extends Component {
     keyExtractor = (deck, index) => {
         return deck.title
     } 
-    
     getDeckComponent = (deck)=> {
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck',{id:deck.item.title,cards:deck.item.questions.length})}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck',{id:deck.item.title})}>
                 <Text>{deck.item.title}</Text>
             </TouchableOpacity>
         )        

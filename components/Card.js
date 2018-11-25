@@ -11,7 +11,8 @@ class Card extends Component{
         question:'',
         answer:'',
         lastQuestion: false,
-        showAnswer: false
+        showAnswer: false,
+        pendingAnswer:true
     }
 
     componentDidMount(){
@@ -43,14 +44,20 @@ class Card extends Component{
         const {deckId, questionId} = this.props
 
         saveOption(deckId,questionId,'correct')
-        .then((option) => this.props.dispatch(addAnswerSelected(deckId,questionId,option)))
+        .then((option) => {
+            this.props.dispatch(addAnswerSelected(deckId,questionId,option))
+            this.setState({pendingAnswer:false})
+        })
     }
 
     onIncorrect = () => {
         const {deckId, questionId} = this.props
 
         saveOption(deckId,questionId,'inCorrect')
-        .then((option) => this.props.dispatch(addAnswerSelected(deckId,questionId,option)))
+        .then((option) => {
+            this.props.dispatch(addAnswerSelected(deckId,questionId,option))
+            this.setState({pendingAnswer:false})
+        })
     }
 
     onResult = () => this.props.navigation.navigate('Result',{id:this.props.deckId})    
@@ -80,7 +87,7 @@ class Card extends Component{
                 )                    
                 :
                     <View>
-                        <TextButton disabled={this.state.lastQuestion} type={'yes'} onPress={this.next}>Next</TextButton>
+                        <TextButton disabled={this.state.pendingAnswer} type={'yes'} onPress={this.next}>Next</TextButton>
                         <Text>{this.questionsLength - (this.props.questionId + 1)} remaining</Text>
                     </View>
                 }                

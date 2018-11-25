@@ -19,18 +19,12 @@ class Card extends Component{
     componentDidMount(){
         const id = this.props.navigation.getParam('id', '0')
         const questionId = this.props.navigation.getParam('question', '0')
-        console.log('Card id:', id)
-        console.log('Question id:', questionId)
         
         getDeck(id).then((deck) => {
-            console.log('Deck to evaluate', deck)
             this.questionsLength = deck.questions.length
-            console.log('# questions:', deck.questions.length)
 
             question = deck.questions[questionId].question
             answer = deck.questions[questionId].answer
-            console.log('Question:', question)
-            console.log('Answer:', answer)
             
             this.setState({
                 question:question,
@@ -45,17 +39,14 @@ class Card extends Component{
     }
 
     next = () => {
-        console.log('Next card:', this.state.id + 1)
         nextQuestion = this.props.navigation.push('Card',{
                 id:this.state.deckId,
                 question:this.state.id + 1
             }
         )
-
     }
 
     onCorrect = () => {
-        console.log('onCorrect')
         const deckId = this.props.navigation.getParam('id', '0')
         const questionId = this.props.navigation.getParam('question', '0')
 
@@ -64,14 +55,14 @@ class Card extends Component{
     }
 
     onIncorrect = () => {
-        console.log('onIncorrect')
         const deckId = this.props.navigation.getParam('id', '0')
         const questionId = this.props.navigation.getParam('question', '0')
 
         saveOption(this.state.deckId,this.state.id,'inCorrect')
         .then((option) => this.props.dispatch(addAnswerSelected(deckId,questionId,option)))
     }
-    
+
+    onResult = () => this.props.navigation.navigate('Result',{id:this.state.deckId})    
 
     render(){
         return(
@@ -95,7 +86,7 @@ class Card extends Component{
                 (
                     <View>
                         <Text>Last question</Text>
-                        <TextButton type={'standard'} onPress={() => this.props.navigation.navigate('Result',{id:this.state.deckId})}>Result</TextButton>
+                        <TextButton type={'standard'} onPress={this.onResult}>Result</TextButton>
                     </View>
                 )                    
                 :

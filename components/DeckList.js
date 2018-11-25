@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from 'react-navigation';
 import Decks from './Decks'
 import NewDeck from './NewDeck'
-import Notification from './Notification'
 
 const DeckList = createBottomTabNavigator({
     Decks: {
@@ -9,10 +8,7 @@ const DeckList = createBottomTabNavigator({
     },
     NewDeck: {
         screen: NewDeck
-    },
-    Notification: {
-        screen: Notification
-    }  
+    }   
 })
 
 

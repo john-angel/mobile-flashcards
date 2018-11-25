@@ -1,6 +1,8 @@
 import { AsyncStorage } from 'react-native'
+import { Notifications, Permissions } from 'expo'
 
 const FLASHCARDS_STORAGE_KEY = 'Udacity:mobileFlashcards'
+const FLASHCARDS_NOTIFICATION = 'Udacity:mobileFlashcards-Notification'
 
 export function saveDeckTitle(title) {
     const deck = buildDeck(title)
@@ -61,6 +63,73 @@ function buildQuestion(question,answer,option = ''){
         option
     }
 }
+
+export function notificationScheduled(){
+    return AsyncStorage.getItem(FLASHCARDS_NOTIFICATION)
+    .then((data) => (data === null ? false : true))
+    .catch((error) => false)   
+    
+}
+
+export function scheduleNotification(){
+        
+    Permissions.getAsync(Permissions.NOTIFICATIONS)
+    .then(status => {
+        console.log('Permissions already granted', status)
+        if(!status.permissions.notifications.allowsAlert){
+            requestPermissions()
+        }else{
+            saveNotification()
+        }
+    })                
+    .catch((error) => (console.warn('Error getting notification permission: ', error)))
+}
+
+function requestPermissions(){
+    Permissions.askAsync(Permissions.NOTIFICATIONS)
+    .then((status ) => {
+        if(status.permissions.notifications.allowsAlert){
+            console.log('Permissions granted', status)
+            saveNotification()                        
+        }else{
+            console.log('Notification permissions denied')
+        }
+    })
+    .catch((error) => (console.log('Error requesting permissions', error)))
+}
+
+function saveNotification(){
+    
+    Notifications.cancelAllScheduledNotificationsAsync()
+
+    let date = new Date()
+    date.setDate(date.getDate() + 1)
+    date.setHours(12)
+    date.setMinutes(0)
+    date.setMilliseconds(0)
+
+    Notifications.scheduleLocalNotificationAsync(
+        createNotificationObject(),
+        {
+            time: date,
+            repeat: 'day',
+        }
+    ).then(id => {
+        AsyncStorage.setItem(FLASHCARDS_NOTIFICATION, JSON.stringify(true))
+        console.log(`Notification set for ${date.getHours()}:${date.getMinutes()}`)
+    })
+    .catch(error => (console.log('Error scheduling local notification:', error)))   
+
+}
+
+function createNotificationObject(){
+    return {
+      title: 'Quiz time!',
+      body: "Don't forget to take a quiz today!",
+      data:{test:"👋 Don't forget to take a quiz today!"},      
+    }
+}
+
 
 
 /*

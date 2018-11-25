@@ -1,5 +1,5 @@
 import { SAVE_DECKS, SAVE_DECK ,} from '../actions/decks'
-import { ADD_QUESTION } from '../actions/questions'
+import { ADD_QUESTION,ADD_ANSWER_SELECTED } from '../actions/questions'
 
 initialState =  (deckId) => (
     {
@@ -36,6 +36,18 @@ function decks(state = {}, action) {
                     }
                 } 
             console.log('State updated with new question:', newState)
+            return newState
+        case ADD_ANSWER_SELECTED:
+            const { answerSelected } = action
+         
+            newState = {
+                ...state,                
+                [action.deckId]:{
+                    ...state[action.deckId],
+                    questions:state[action.deckId].questions[action.questionId].option = answerSelected
+                }
+            } 
+            console.log('State updated with new answer selected:', newState)
             return newState
                  
         default:

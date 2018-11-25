@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Button } from 'react-native'
+import { connect } from 'react-redux'
+import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
 
 class Card extends Component{
@@ -53,11 +55,20 @@ class Card extends Component{
 
     onCorrect = () => {
         console.log('onCorrect')
+        const deckId = this.props.navigation.getParam('id', '0')
+        const questionId = this.props.navigation.getParam('question', '0')
+
         saveOption(this.state.deckId,this.state.id,'correct')
+        .then((option) => this.props.dispatch(addAnswerSelected(deckId,questionId,option)))
     }
+
     onIncorrect = () => {
         console.log('onIncorrect')
+        const deckId = this.props.navigation.getParam('id', '0')
+        const questionId = this.props.navigation.getParam('question', '0')
+
         saveOption(this.state.deckId,this.state.id,'inCorrect')
+        .then((option) => this.props.dispatch(addAnswerSelected(deckId,questionId,option)))
     }
     
     
@@ -96,4 +107,4 @@ class Card extends Component{
     }
 }
 
-export default Card;
+export default connect()(Card);

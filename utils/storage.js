@@ -28,26 +28,21 @@ export function saveQuestion(deckId,question,answer){
         deck = decks[deckId]
         questionObj = buildQuestion(question,answer)
         deck.questions.push(questionObj)
-        //console.log('Decks updated:', decks);
         return AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks))                   
     })
     .then(() => (questionObj))    
 }
 
 export function saveOption(deckId,questionId,option){
-    console.log('Saving option for deck', deckId, '. questionId:', questionId, ' - Option:', option)
-
-    getDecks().then((decks) =>{
+    return getDecks()
+    .then((decks) => {
         deck = decks[deckId]
         question = deck.questions[questionId]
-        console.log('Question to update', question)
         question.option = option
-        //questionObj = buildQuestion(question,answer,option)
-        //deck.questions.push(questionObj)
-        console.log('Deck updated:', JSON.stringify(deck))
         console.log('Decks updated:', decks);
-        AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks))
+        return AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks))
     })
+    .then(() => (option))
 }
 
  function buildDeck(key){

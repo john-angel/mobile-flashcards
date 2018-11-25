@@ -81,7 +81,7 @@ class Card extends Component{
                 {this.questionsLength === this.props.questionId + 1 ?
                 (
                     <View>                        
-                        <TextButton type={'standard'} onPress={this.onResult}>Result</TextButton>
+                        <TextButton disabled={this.state.pendingAnswer} type={'standard'} onPress={this.onResult}>Result</TextButton>
                         <Text>Last question</Text>
                     </View>
                 )                    

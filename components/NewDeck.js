@@ -15,12 +15,12 @@ class NewDeck extends Component{
     save = () => {
         saveDeckTitle(this.state.name).then((deck)=>{
             this.props.dispatch(saveDeck(deck))
-            this.toHome();
+            this.toDeck();
         })
     }
 
-    toHome = () => {
-        this.props.navigation.dispatch(NavigationActions.back({key: 'NewDeck'}))
+    toDeck = () => {
+        this.props.navigation.navigate('Deck',{id:this.state.name})
     }
 
     deleteDecks = () => {
@@ -33,7 +33,7 @@ class NewDeck extends Component{
         return(
             <View style={styles.container}>
                 <TextInput style={styles.input} placeholder="Deck name..." onChangeText={(name) => this.setState({name})}/>
-                <TextButton disabled={this.state.name.length > 0 ? false : true} type={'yes'}style={{padding: 10}} onPress={this.save}>Save</TextButton>
+                <TextButton disabled={this.state.name.length > 0 ? false : true} type={'yes'}style={{padding: 10}} onPress={this.save}>Create Deck</TextButton>
                 <Button title='Delete decks' onPress={this.deleteDecks}/>
             </View>
         )

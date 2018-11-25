@@ -17,7 +17,6 @@ function decks(state = {}, action) {
                 ...state,
                 ...action.decks,
             } 
-            console.log('Reducer SAVE_DECKS', newState)
             return newState
         case SAVE_DECK:
             return {
@@ -34,7 +33,6 @@ function decks(state = {}, action) {
                         questions:tempState[deckId].questions.concat([question])
                     }
                 } 
-            console.log('Reducer ADD_QUESTION', newState)
             return newState
         case ADD_ANSWER_SELECTED:
             const { answerSelected } = action
@@ -55,7 +53,6 @@ function decks(state = {}, action) {
                     })
                 }
             } 
-            console.log('Reducer ADD_ANSWER_SELECTED', newState)
             return newState
                  
         default:

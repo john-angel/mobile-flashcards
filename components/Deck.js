@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state,props) {
     
     const deckId = props.navigation.getParam('id', '0')
-    console.log(`mapStateToProps - Deck. Deckid ${deckId} - state`, state)
+    //console.log(`mapStateToProps - Deck. Deckid ${deckId} - state`, state)
     return{
         deckId,
         numberOfQuestions:state[deckId].questions.length,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
 import {getDeck} from '../utils/storage'
 import TextButton from './TextButton'
 
@@ -25,11 +26,12 @@ class Result extends Component{
             this.setState({
                 numberQuestions:deck.questions.length,
                 result:result
-            })                
-
+            })
         })
-
     }
+
+    onRestartQuiz = () => this.props.navigation.push('Card',{id:this.props.deckId,question:0})
+    onBackToDeck = () => (this.props.navigation.navigate('Deck',{id:this.props.deckId}))
     
     render(){  
 
@@ -37,6 +39,8 @@ class Result extends Component{
             <View style={styles.container}>
                 <Text style={styles.text}>Result for deck {this.props.navigation.getParam('id', '0')}</Text>
                 <Text style={styles.text}>{this.state.result} questions correct out of {this.state.numberQuestions}</Text>
+                <TextButton type={'standard'} onPress={this.onRestartQuiz}>Restart Quiz</TextButton>
+                <TextButton type={'standard'} onPress={this.onBackToDeck}>Back to Deck</TextButton>
             </View>
         )
     }
@@ -51,4 +55,12 @@ const styles = StyleSheet.create({
         fontSize:19
     }
 })
-export default Result;
+
+function mapStateToProps(state,props){
+    const deckId = props.navigation.getParam('id', '0')
+    
+    return{
+        deckId
+    }
+}
+export default connect(mapStateToProps)(Result);

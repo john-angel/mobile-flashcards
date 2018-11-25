@@ -41,7 +41,6 @@ export function saveOption(deckId,questionId,option){
         deck = decks[deckId]
         question = deck.questions[questionId]
         question.option = option
-        console.log('Decks updated:', decks);
         return AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks))
     })
     .then(() => (option))

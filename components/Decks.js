@@ -52,7 +52,7 @@ class Decks extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('mapStateToProps Decks - state', state)
+    //console.log('mapStateToProps Decks - state', state)
     
     return{
         decks:state

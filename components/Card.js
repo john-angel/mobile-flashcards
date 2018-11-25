@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state,props) {
-    console.log('mapStateToProps Card - state', state)
+    //console.log('mapStateToProps Card - state', state)
     
     const deckId = props.navigation.getParam('id', '0')
     const questionId = props.navigation.getParam('question', '0')   

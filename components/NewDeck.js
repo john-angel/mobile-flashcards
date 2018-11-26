@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, Button,Text, StyleSheet } from 'react-native'
+import { View, TextInput, Button,Text, StyleSheet ,TouchableOpacity} from 'react-native'
 import {saveDeckTitle,getDecks,getDeck, removeDecks} from '../utils/storage'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -23,11 +23,12 @@ class NewDeck extends Component{
         this.props.navigation.navigate('Deck',{id:this.state.name})
     }
 
+   
     render(){
         return(
             <View style={styles.container}>
-                <TextInput style={styles.input} placeholder="Deck name..." onChangeText={(name) => this.setState({name})}/>
-                <TextButton disabled={this.state.name.length > 0 ? false : true} type={'yes'}style={{padding: 10}} onPress={this.save}>Create Deck</TextButton>
+                <TextInput style={styles.input} placeholder="Deck name..." onChangeText={(name) => this.setState({ name })} />
+                <TextButton disabled={this.state.name.length > 0 ? false : true} type={'yes'} style={{padding: 10}} onPress={this.save}>Create Deck</TextButton>
             </View>
         )
     }
@@ -41,6 +42,9 @@ const styles = StyleSheet.create({
     },
     input: {
         fontSize:19,
+        textAlign: 'center',
+        marginBottom:10
+
     }
 })
 

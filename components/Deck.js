@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     text: {
-        fontSize:19
+        fontSize:19,
+        marginBottom:10
     }
 })
 function mapStateToProps(state,props) {

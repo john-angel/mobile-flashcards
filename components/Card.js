@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
 import TextButton from './TextButton'
+import { Ionicons } from '@expo/vector-icons'
+import { blue } from '../utils/colors'
 
 class Card extends Component{
 
@@ -63,12 +65,11 @@ class Card extends Component{
 
     onShowAnswer = () => {
         this.setState({showAnswer:true})
-        Animated.timing(                  // Animate over time
-            this.state.fadeAnim,            // The animated value to drive
-            {
-              toValue: 1,                   // Animate to opacity: 1 (opaque)
-              duration: 500,              // Make it take a while
-            }
+        Animated.timing( this.state.fadeAnim,           
+        {
+            toValue: 1,                   
+            duration: 500,              
+        }
         ).start(); 
     }
     onResult = () => this.props.navigation.navigate('Result',{id:this.props.deckId})    
@@ -77,11 +78,11 @@ class Card extends Component{
         let { fadeAnim } = this.state;
         return(
             <View style={styles.container}>
-                <Text style={styles.text}>{this.state.question}</Text>
+                <Text style={[styles.text,{fontWeight: 'bold'}]}>{this.state.question}</Text>
                 {
                     this.state.showAnswer === true ? (
                         <Animated.View style={{opacity:fadeAnim}}>
-                            <Text style={styles.text}>{this.state.answer}</Text>
+                            <Text style={styles.textAnswer}>{this.state.answer}</Text>
                             <TextButton type={'yes'} onPress={this.onCorrect}>Correct</TextButton>
                             <TextButton type={'no'} onPress={this.onIncorrect}>Incorrect</TextButton>
                         </Animated.View>                        
@@ -92,15 +93,20 @@ class Card extends Component{
                 }
                 {this.questionsLength === this.props.questionId + 1 ?
                 (
-                    <View>                        
-                        <TextButton disabled={this.state.pendingAnswer} type={'standard'} onPress={this.onResult}>Result</TextButton>
+                    <View style={{alignItems:'flex-end'}}>                        
+                        <TextButton disabled={this.state.pendingAnswer} style={[styles.buttonBottom,{fontSize:19,color:blue}]} onPress={this.onResult}>Result</TextButton>
                         <Text>Last question</Text>
                     </View>
                 )                    
                 :
-                    <View>
-                        <TextButton disabled={this.state.pendingAnswer} type={'standard'} onPress={this.next}>Next</TextButton>
-                        <Text>{this.questionsLength - (this.props.questionId + 1)} remaining</Text>
+                    <View style={{alignItems:'flex-end'}}>
+                        <TextButton  disabled={this.state.pendingAnswer} style={styles.buttonBottom} onPress={this.next}>
+                            <Ionicons style={{color:blue}}
+                                name={'ios-fastforward'}
+                                size={29}
+                            />                        
+                        </TextButton>
+                        <Text>{this.questionsLength - (this.props.questionId + 1)} questions remaining</Text>
                     </View>
                 }                
             </View>
@@ -117,8 +123,19 @@ const styles = StyleSheet.create({
     },
     text:{
         fontSize:19,
-        textAlign:'center'
+        textAlign:'center',
+        marginBottom:10
+    },
+    textAnswer:{
+        fontSize:19,
+        textAlign:'center',
+        marginBottom:30
+    },
+    buttonBottom:{
+        marginTop:30,
+        marginBottom:15
     }
+
 });
 
 

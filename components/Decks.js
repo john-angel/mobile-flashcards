@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { saveDecks } from '../actions/decks'
 import {getDecks} from '../utils/storage'
 import { AppLoading} from 'expo'
-
-
+import { blue } from '../utils/colors'
 
 class Decks extends Component {
     
@@ -27,7 +26,7 @@ class Decks extends Component {
     getDeckComponent = (deck)=> {
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck',{id:deck.item.title})}>
-                <Text>{deck.item.title}</Text>
+                <Text style={styles.text}>{deck.item.title}</Text>
             </TouchableOpacity>
         )        
     }
@@ -70,6 +69,11 @@ const styles = StyleSheet.create({
         alignItems:'center'
 
     },
+    text:{
+        color:blue,
+        fontSize:16,
+        marginBottom:5
+    }
 });
 
 

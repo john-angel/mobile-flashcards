@@ -19,7 +19,7 @@ class NewDeck extends Component{
         })
     }
 
-    toDeck = () => {
+    toDeck = () => {  
         this.props.navigation.navigate('Deck',{id:this.state.name})
     }
 

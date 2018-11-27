@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     },
     input: {
         fontSize:19,
+        marginBottom:10
     }
 });
 

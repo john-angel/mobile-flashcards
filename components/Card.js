@@ -72,7 +72,7 @@ class Card extends Component{
         }
         ).start(); 
     }
-    onResult = () => this.props.navigation.navigate('Result',{id:this.props.deckId})    
+    onResult = () => this.props.navigation.push('Result',{id:this.props.deckId})    
 
     render(){
         let { fadeAnim } = this.state;

@@ -20,14 +20,18 @@ class NewDeck extends Component{
     }
 
     toDeck = () => {  
-        this.props.navigation.navigate('Deck',{id:this.state.name})
+        const text = this.state.name
+        
+        this.setState({name:''})
+        this.props.navigation.navigate('Deck',{id:text})
+
     }
 
    
     render(){
         return(
             <View style={styles.container}>
-                <TextInput style={styles.input} placeholder="Deck name..." onChangeText={(name) => this.setState({ name })} />
+                <TextInput style={styles.input} placeholder="Deck name..." value={this.state.name} onChangeText={(name) => this.setState({ name })} />
                 <TextButton disabled={this.state.name.length > 0 ? false : true} type={'yes'} style={{padding: 10}} onPress={this.save}>Create Deck</TextButton>
             </View>
         )

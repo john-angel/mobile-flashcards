@@ -29,10 +29,13 @@ class NewDeck extends Component{
 
    
     render(){
+        const { name } = this.state;
+        const disabled = !name.trim()
+
         return(
             <View style={styles.container}>
                 <TextInput style={styles.input} placeholder="Deck name..." value={this.state.name} onChangeText={(name) => this.setState({ name })} />
-                <TextButton disabled={this.state.name.length > 0 ? false : true} type={'yes'} style={{padding: 10}} onPress={this.save}>Create Deck</TextButton>
+                <TextButton disabled={disabled} type={'yes'} style={{padding: 10}} onPress={this.save}>Create Deck</TextButton>
             </View>
         )
     }

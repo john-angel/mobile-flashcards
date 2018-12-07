@@ -22,11 +22,13 @@ class NewQuestion extends Component{
     }
    
     render(){
-        const disableSaving = this.state.question.length > 0 && this.state.answer.length > 0 ? false : true
+        const {question,answer} = this.state
+        const disableSaving = !question.trim() || !answer.trim()
+
         return(
             <View style={styles.container}>
-                <TextInput defaultValue={this.state.question} style={styles.input} placeholder="Question..." onChangeText={(question) => this.setState({question})}/>
-                <TextInput defaultValue={this.state.answer} style={styles.input} placeholder="Answer..." onChangeText={(answer) => this.setState({answer})}/>
+                <TextInput defaultValue={question} style={styles.input} placeholder="Question..." onChangeText={(question) => this.setState({question})}/>
+                <TextInput defaultValue={answer} style={styles.input} placeholder="Answer..." onChangeText={(answer) => this.setState({answer})}/>
                 <TextButton disabled={disableSaving} type={'yes'} onPress={this.save}>Submit</TextButton>
             </View>
         )

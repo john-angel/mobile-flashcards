@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from 'react-navigation';
 import Decks from './Decks'
 import NewDeck from './NewDeck'
 
-const DeckList = createBottomTabNavigator({
+const TabNavigator = createBottomTabNavigator({
     Decks: {
         screen: Decks
     },
@@ -12,5 +12,5 @@ const DeckList = createBottomTabNavigator({
 })
 
 
-export default DeckList;
+export default TabNavigator;
 

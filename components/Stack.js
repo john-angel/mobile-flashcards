@@ -1,13 +1,13 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation'
-import DeckList from './DeckList'
+import TabNavigator from './TabNavigator'
 import Deck from './Deck'
 import NewQuestion from './NewQuestion'
 import Card from './Card'
 import Result from './Result'
 
 const Stack = createStackNavigator({
-    DeckList: {
-        screen: DeckList
+    TabNavigator: {
+        screen: TabNavigator
     },
     Deck: {
         screen: Deck,
@@ -24,7 +24,7 @@ const Stack = createStackNavigator({
     }
 },
 {
-  initialRouteName: 'DeckList',
+  initialRouteName: 'TabNavigator',
 })
 
 export default createAppContainer(Stack);

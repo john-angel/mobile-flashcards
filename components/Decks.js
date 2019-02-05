@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { saveDecks } from '../actions/decks'
 import {getDecks} from '../utils/storage'
 import { AppLoading} from 'expo'
-import { blue } from '../utils/colors'
+import { Ionicons } from '@expo/vector-icons'
+import { blue,orange } from '../utils/colors'
 
 class Decks extends Component {
     
@@ -24,9 +25,10 @@ class Decks extends Component {
         return deck.title
     } 
     getDeckComponent = (deck)=> {
+        
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Deck',{id:deck.item.title})}>
-                <Text style={styles.text}>{deck.item.title}</Text>
+                <Ionicons style={styles.icon} name={'logo-buffer'}><Text style={styles.text}>{' ' + deck.item.title}</Text></Ionicons>
             </TouchableOpacity>
         )        
     }
@@ -63,16 +65,19 @@ export default connect(mapStateToProps)(Decks)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        fontSize:19,
         backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems:'center'
 
     },
+    icon:{
+        color:orange,
+        fontSize:16,
+        marginBottom:5
+    },
     text:{
         color:blue,
         fontSize:16,
-        marginBottom:5
     }
 });
 

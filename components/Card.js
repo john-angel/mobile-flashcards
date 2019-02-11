@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Animated } from 'react-native'
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native'
 import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
@@ -14,8 +14,17 @@ class Card extends Component{
         answer:'',
         lastQuestion: false,
         showAnswer: false,
-        pendingAnswer:true,
-        fadeAnim: new Animated.Value(0)
+        pendingAnswer:true
+    }
+
+    constructor(){ 
+        super();
+        this.spinValue = new Animated.Value(0)
+        this.value = 0;
+
+        this.spinValue.addListener(({ value }) => {
+            this.value = value;
+        })
     }
 
     componentDidMount(){
@@ -64,33 +73,64 @@ class Card extends Component{
     }
 
     onShowAnswer = () => {
-        this.setState({showAnswer:true})
-        Animated.timing( this.state.fadeAnim,           
-        {
-            toValue: 1,                   
-            duration: 500,              
-        }
-        ).start(); 
-    }
-    onResult = () => this.props.navigation.push('Result',{id:this.props.deckId})    
 
+        Animated.timing(
+            this.spinValue,
+            {
+                toValue: !this.value,
+                duration: 1000,
+                easing: Easing.linear
+            }
+        ).start(() => {
+
+            this.setState({showAnswer:true})
+
+            Animated.timing(
+                this.spinValue,
+                {
+                    toValue: !this.value,
+                    duration: 1000,
+                    easing: Easing.linear
+                }
+            ).start(() => {
+
+            })
+        })
+       
+    }
+    onResult = () => this.props.navigation.push('Result',{id:this.props.deckId}) 
+   
     render(){
-        let { fadeAnim } = this.state;
+
+        const spin = this.spinValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '90deg']
+        })
+
+        const rotateYStyle = {
+            transform: [{ rotateY: spin }]
+        }
         return(
             <View style={styles.container}>
-                <Text style={[styles.text,{fontWeight: 'bold'}]}>{this.state.question}</Text>
+                <Animated.View style={[rotateYStyle,styles.card]}>
                 {
-                    this.state.showAnswer === true ? (
-                        <Animated.View style={{opacity:fadeAnim}}>
+                    this.state.showAnswer === false ? (
+                        <View>
+                            <Text style={[styles.text, { fontWeight: 'bold' }]}>{this.state.question}</Text>
+                            <TextButton type={'standard'} onPress={this.onShowAnswer}>Show answer</TextButton>
+                        </View>
+                    )
+                    : (
+                        <View>
                             <Text style={styles.textAnswer}>{this.state.answer}</Text>
                             <TextButton type={'yes'} onPress={this.onCorrect}>Correct</TextButton>
                             <TextButton type={'no'} onPress={this.onIncorrect}>Incorrect</TextButton>
-                        </Animated.View>                        
+                        </View>                        
                     )
-                    : (
-                        <TextButton type={'standard'} onPress={this.onShowAnswer}>Show answer</TextButton>
-                    )                                    
                 }
+                   
+                </Animated.View>
+                
                 {this.questionsLength === this.props.questionId + 1 ?
                 (
                     <View style={{alignItems:'flex-end'}}>                        
@@ -120,6 +160,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems:'center'
+    },
+    card: {
+        borderWidth: 2,
+        borderRadius: 6,
+        borderColor: '#aa42f4',
+        width: '90%',
+        height: '50%',
     },
     text:{
         fontSize:19,

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Animated, Easing } from 'react-native'
+import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
 import TextButton from './TextButton'
-import { Ionicons } from '@expo/vector-icons'
-import { blue } from '../utils/colors'
+import { Ionicons, AntDesign } from '@expo/vector-icons'
+import { blue,white } from '../utils/colors'
 
 class Card extends Component{
 
@@ -52,7 +52,8 @@ class Card extends Component{
         )
     }
 
-    onCorrect = () => {        
+    onCorrect = () => {     
+        console.log('onCorrect')   
         const {deckId, questionId} = this.props
 
         saveOption(deckId,questionId,'correct')
@@ -99,6 +100,9 @@ class Card extends Component{
        
     }
     onResult = () => this.props.navigation.push('Result',{id:this.props.deckId}) 
+
+    //<TextButton type={'answer'} onPress={this.onShowAnswer}>Show answer</TextButton>
+
    
     render(){
 
@@ -116,15 +120,20 @@ class Card extends Component{
                 {
                     this.state.showAnswer === false ? (
                         <View>
-                            <Text style={[styles.text, { fontWeight: 'bold' }]}>{this.state.question}</Text>
-                            <TextButton type={'standard'} onPress={this.onShowAnswer}>Show answer</TextButton>
+                            <Text style={styles.text}>{this.state.question}</Text>
+                            <TouchableOpacity style={styles.answerButton}  onPress={this.onShowAnswer}>
+                                <Text style={styles.answerButtonText}>Answer</Text>
+                            </TouchableOpacity>
                         </View>
                     )
                     : (
                         <View>
-                            <Text style={styles.textAnswer}>{this.state.answer}</Text>
-                            <TextButton type={'yes'} onPress={this.onCorrect}>Correct</TextButton>
-                            <TextButton type={'no'} onPress={this.onIncorrect}>Incorrect</TextButton>
+                            <Text style={styles.text}>{this.state.answer}</Text>
+                            <View style={{flexDirection: "row", justifyContent: 'center'}}>
+                                <AntDesign style={{color:'#0EB252'}}  name={'check'} onPress={this.onCorrect} size={29} />
+                                <AntDesign style={{color:'#FF3729'}}  name={'close'} onPress={this.onIncorrect} size={29} />
+                            </View>
+                                                   
                         </View>                        
                     )
                 }
@@ -164,23 +173,33 @@ const styles = StyleSheet.create({
     card: {
         borderWidth: 2,
         borderRadius: 6,
-        borderColor: '#aa42f4',
+        borderColor: '#A85ECC',
         width: '90%',
         height: '50%',
     },
     text:{
         fontSize:19,
         textAlign:'center',
-        marginBottom:10
-    },
-    textAnswer:{
-        fontSize:19,
-        textAlign:'center',
-        marginBottom:30
+        marginTop:'20%'
     },
     buttonBottom:{
         marginTop:30,
         marginBottom:15
+    },
+    answerButton:{
+        backgroundColor:'#76617F',
+        borderRadius: 6,
+        marginTop:'20%',
+        marginRight:'30%',
+        marginLeft:'30%'       
+    },
+    answerButtonText:{
+        color:white,
+        fontWeight:'bold',
+        fontSize: 20,
+        paddingTop:5,
+        paddingBottom:5,
+        textAlign:'center'
     }
 
 });

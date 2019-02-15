@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Animated } from 'react-native'
+import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
-import TextButton from './TextButton'
-import { Ionicons } from '@expo/vector-icons'
-import { blue } from '../utils/colors'
+import { AntDesign } from '@expo/vector-icons'
+import { white,blue } from '../utils/colors'
 
 class Card extends Component{
 
@@ -14,8 +13,17 @@ class Card extends Component{
         answer:'',
         lastQuestion: false,
         showAnswer: false,
-        pendingAnswer:true,
-        fadeAnim: new Animated.Value(0)
+        pendingAnswer:true
+    }
+
+    constructor(){ 
+        super();
+        this.spinValue = new Animated.Value(0)
+        this.value = 0;
+
+        this.spinValue.addListener(({ value }) => {
+            this.value = value;
+        })
     }
 
     componentDidMount(){
@@ -43,7 +51,8 @@ class Card extends Component{
         )
     }
 
-    onCorrect = () => {        
+    onCorrect = () => {     
+        console.log('onCorrect')   
         const {deckId, questionId} = this.props
 
         saveOption(deckId,questionId,'correct')
@@ -64,83 +73,147 @@ class Card extends Component{
     }
 
     onShowAnswer = () => {
-        this.setState({showAnswer:true})
-        Animated.timing( this.state.fadeAnim,           
-        {
-            toValue: 1,                   
-            duration: 500,              
-        }
-        ).start(); 
+
+        Animated.timing(
+            this.spinValue,
+            {
+                toValue: !this.value,
+                duration: 1000,
+                easing: Easing.linear
+            }
+        ).start(() => {
+
+            this.setState({showAnswer:true})
+
+            Animated.timing(
+                this.spinValue,
+                {
+                    toValue: !this.value,
+                    duration: 1000,
+                    easing: Easing.linear
+                }
+            ).start(() => {
+
+            })
+        })
+       
     }
-    onResult = () => this.props.navigation.push('Result',{id:this.props.deckId})    
+    onResult = () => this.props.navigation.push('Result',{id:this.props.deckId}) 
 
     render(){
-        let { fadeAnim } = this.state;
+
+        const spin = this.spinValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '90deg']
+        })
+
+        const rotateYStyle = {
+            transform: [{ rotateY: spin }]
+        }
+        
         return(
             <View style={styles.container}>
-                <Text style={[styles.text,{fontWeight: 'bold'}]}>{this.state.question}</Text>
+                <Animated.View style={[rotateYStyle,styles.card]}>
                 {
-                    this.state.showAnswer === true ? (
-                        <Animated.View style={{opacity:fadeAnim}}>
-                            <Text style={styles.textAnswer}>{this.state.answer}</Text>
-                            <TextButton type={'yes'} onPress={this.onCorrect}>Correct</TextButton>
-                            <TextButton type={'no'} onPress={this.onIncorrect}>Incorrect</TextButton>
-                        </Animated.View>                        
+                    this.state.showAnswer === false ? (
+                        <View>
+                            <Text style={styles.text}>{this.state.question}</Text>
+                            <TouchableOpacity style={styles.answerButton}  onPress={this.onShowAnswer}>
+                                <Text style={styles.answerButtonText}>Answer</Text>
+                            </TouchableOpacity>
+                        </View>
                     )
                     : (
-                        <TextButton type={'standard'} onPress={this.onShowAnswer}>Show answer</TextButton>
-                    )                                    
+                        <View>
+                            <Text style={styles.text}>{this.state.answer}</Text>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                                <TouchableOpacity onPress={this.onCorrect}>
+                                    <AntDesign style={{color:'#0EB252',marginTop:'20%'}} name={'check'}  size={29} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={this.onIncorrect}>
+                                    <AntDesign style={{color:'#FF3729',marginTop:'20%'}} name={'close'}  size={29} />
+                                </TouchableOpacity>
+                            </View>
+                            <View>  
+                                <Text style={{ textAlign: 'center', marginTop: '20%' }}>{this.props.questionId + 1} / {this.questionsLength}</Text>
+                                {
+                                    this.questionsLength === this.props.questionId + 1 ?
+                                    (
+                                        <TouchableOpacity onPress={this.onResult}>
+                                            <Text style={styles.resultsText}>Result</Text>
+                                        </TouchableOpacity>
+                                    )
+                                    :
+                                    (  
+                                        <TouchableOpacity  onPress={this.next}>                                             
+                                            <AntDesign style={{color:blue, textAlign: 'right'}} name={'right'}  size={29} />                                            
+                                        </TouchableOpacity> 
+                                    )
+                                }
+                            </View>
+                                                                  
+                        </View>                                                   
+                    )       
                 }
-                {this.questionsLength === this.props.questionId + 1 ?
-                (
-                    <View style={{alignItems:'flex-end'}}>                        
-                        <TextButton disabled={this.state.pendingAnswer} style={[styles.buttonBottom,{fontSize:19,color:blue}]} onPress={this.onResult}>Result</TextButton>
-                        <Text>Last question</Text>
-                    </View>
-                )                    
-                :
-                    <View style={{alignItems:'flex-end'}}>
-                        <TextButton  disabled={this.state.pendingAnswer} style={styles.buttonBottom} onPress={this.next}>
-                            <Ionicons style={{color:blue}}
-                                name={'ios-fastforward'}
-                                size={29}
-                            />                        
-                        </TextButton>
-                        <Text>{this.questionsLength - (this.props.questionId + 1)} questions remaining</Text>
-                    </View>
-                }                
+                </Animated.View>
+                
             </View>
 
         )
     }
 }
 
+/*
+
+
+*/
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems:'center'
+        alignItems:'center',
+        justifyContent:'center'     
+    },
+    card: {        
+        borderWidth: 2,
+        borderRadius: 6,
+        borderColor: '#A85ECC',
+        width: '90%',
+        height: '50%'        
     },
     text:{
         fontSize:19,
         textAlign:'center',
-        marginBottom:10
+        marginTop:'20%'
     },
-    textAnswer:{
-        fontSize:19,
+    answerButton:{
+        backgroundColor:'#76617F',
+        borderRadius: 6,
+        marginTop:'20%',
+        marginRight:'30%',
+        marginLeft:'30%'       
+    },
+    answerButtonText:{
+        color:white,
+        fontWeight:'bold',
+        fontSize: 20,        
         textAlign:'center',
-        marginBottom:30
+        paddingTop:5,
+        paddingBottom:5
     },
-    buttonBottom:{
-        marginTop:30,
-        marginBottom:15
+    resultsText:{
+        color: '#76617F',
+        textAlign: 'center',
+        fontSize:19,
+        fontWeight:'bold',
+        marginTop: '15%'
     }
-
+   
 });
 
 
 function mapStateToProps(state,props) {
-    //console.log('mapStateToProps Card - state', state)
     
     const deckId = props.navigation.getParam('id', '0')
     const questionId = props.navigation.getParam('question', '0')   

@@ -3,9 +3,8 @@ import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity } from 'reac
 import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
-import TextButton from './TextButton'
-import { Ionicons, AntDesign } from '@expo/vector-icons'
-import { blue,white } from '../utils/colors'
+import { AntDesign } from '@expo/vector-icons'
+import { white,blue } from '../utils/colors'
 
 class Card extends Component{
 
@@ -101,9 +100,6 @@ class Card extends Component{
     }
     onResult = () => this.props.navigation.push('Result',{id:this.props.deckId}) 
 
-    //<TextButton type={'answer'} onPress={this.onShowAnswer}>Show answer</TextButton>
-
-   
     render(){
 
         const spin = this.spinValue.interpolate({
@@ -114,6 +110,7 @@ class Card extends Component{
         const rotateYStyle = {
             transform: [{ rotateY: spin }]
         }
+        
         return(
             <View style={styles.container}>
                 <Animated.View style={[rotateYStyle,styles.card]}>
@@ -129,62 +126,66 @@ class Card extends Component{
                     : (
                         <View>
                             <Text style={styles.text}>{this.state.answer}</Text>
-                            <View style={{flexDirection: "row", justifyContent: 'center'}}>
-                                <AntDesign style={{color:'#0EB252'}}  name={'check'} onPress={this.onCorrect} size={29} />
-                                <AntDesign style={{color:'#FF3729'}}  name={'close'} onPress={this.onIncorrect} size={29} />
+                            <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                                <TouchableOpacity onPress={this.onCorrect}>
+                                    <AntDesign style={{color:'#0EB252',marginTop:'20%'}} name={'check'}  size={29} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={this.onIncorrect}>
+                                    <AntDesign style={{color:'#FF3729',marginTop:'20%'}} name={'close'}  size={29} />
+                                </TouchableOpacity>
                             </View>
-                                                   
-                        </View>                        
-                    )
+                            <View>  
+                                <Text style={{ textAlign: 'center', marginTop: '20%' }}>{this.props.questionId + 1} / {this.questionsLength}</Text>
+                                {
+                                    this.questionsLength === this.props.questionId + 1 ?
+                                    (
+                                        <TouchableOpacity onPress={this.onResult}>
+                                            <Text style={styles.resultsText}>Result</Text>
+                                        </TouchableOpacity>
+                                    )
+                                    :
+                                    (  
+                                        <TouchableOpacity  onPress={this.next}>                                             
+                                            <AntDesign style={{color:blue, textAlign: 'right'}} name={'right'}  size={29} />                                            
+                                        </TouchableOpacity> 
+                                    )
+                                }
+                            </View>
+                                                                  
+                        </View>                                                   
+                    )       
                 }
-                   
                 </Animated.View>
                 
-                {this.questionsLength === this.props.questionId + 1 ?
-                (
-                    <View style={{alignItems:'flex-end'}}>                        
-                        <TextButton disabled={this.state.pendingAnswer} style={[styles.buttonBottom,{fontSize:19,color:blue}]} onPress={this.onResult}>Result</TextButton>
-                        <Text>Last question</Text>
-                    </View>
-                )                    
-                :
-                    <View style={{alignItems:'flex-end'}}>
-                        <TextButton  disabled={this.state.pendingAnswer} style={styles.buttonBottom} onPress={this.next}>
-                            <Ionicons style={{color:blue}}
-                                name={'ios-fastforward'}
-                                size={29}
-                            />                        
-                        </TextButton>
-                        <Text>{this.questionsLength - (this.props.questionId + 1)} questions remaining</Text>
-                    </View>
-                }                
             </View>
 
         )
     }
 }
 
+/*
+
+
+*/
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems:'center'
+        alignItems:'center',
+        justifyContent:'center'     
     },
-    card: {
+    card: {        
         borderWidth: 2,
         borderRadius: 6,
         borderColor: '#A85ECC',
         width: '90%',
-        height: '50%',
+        height: '50%'        
     },
     text:{
         fontSize:19,
         textAlign:'center',
         marginTop:'20%'
-    },
-    buttonBottom:{
-        marginTop:30,
-        marginBottom:15
     },
     answerButton:{
         backgroundColor:'#76617F',
@@ -196,17 +197,23 @@ const styles = StyleSheet.create({
     answerButtonText:{
         color:white,
         fontWeight:'bold',
-        fontSize: 20,
+        fontSize: 20,        
+        textAlign:'center',
         paddingTop:5,
-        paddingBottom:5,
-        textAlign:'center'
+        paddingBottom:5
+    },
+    resultsText:{
+        color: '#76617F',
+        textAlign: 'center',
+        fontSize:19,
+        fontWeight:'bold',
+        marginTop: '15%'
     }
-
+   
 });
 
 
 function mapStateToProps(state,props) {
-    //console.log('mapStateToProps Card - state', state)
     
     const deckId = props.navigation.getParam('id', '0')
     const questionId = props.navigation.getParam('question', '0')   

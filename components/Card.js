@@ -144,7 +144,7 @@ class Card extends Component{
                                     :
                                     (  
                                         <TouchableOpacity disabled={this.state.disableContinue}  onPress={this.next}>                                             
-                                            <AntDesign style={{color:blue, textAlign: 'right'}} name={'right'}  size={29} />                                            
+                                            <AntDesign style={{color:blue, textAlign: 'right',marginTop: '15%'}} name={'right'}  size={29} />                                            
                                         </TouchableOpacity> 
                                     )
                                 }

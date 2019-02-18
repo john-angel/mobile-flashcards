@@ -11,9 +11,8 @@ class Card extends Component{
     state = {
         question:'',
         answer:'',
-        lastQuestion: false,
         showAnswer: false,
-        pendingAnswer:true
+        disableContinue:true
     }
 
     constructor(){ 
@@ -32,13 +31,12 @@ class Card extends Component{
         getDeck(deckId).then((deck) => {
             this.questionsLength = deck.questions.length
 
-            question = deck.questions[questionId].question
-            answer = deck.questions[questionId].answer
+            let question = deck.questions[questionId].question
+            let answer = deck.questions[questionId].answer
             
             this.setState({
                 question:question,
-                answer:answer,
-                lastQuestion: deck.questions.length === questionId + 1
+                answer:answer
             })
         })        
     }
@@ -58,7 +56,7 @@ class Card extends Component{
         saveOption(deckId,questionId,'correct')
         .then((option) => {
             this.props.dispatch(addAnswerSelected(deckId,questionId,option))
-            this.setState({pendingAnswer:false})
+            this.setState({disableContinue:false})
         })
     }
 
@@ -68,7 +66,7 @@ class Card extends Component{
         saveOption(deckId,questionId,'inCorrect')
         .then((option) => {
             this.props.dispatch(addAnswerSelected(deckId,questionId,option))
-            this.setState({pendingAnswer:false})
+            this.setState({disableContinue:false})
         })
     }
 
@@ -139,13 +137,13 @@ class Card extends Component{
                                 {
                                     this.questionsLength === this.props.questionId + 1 ?
                                     (
-                                        <TouchableOpacity onPress={this.onResult}>
+                                        <TouchableOpacity disabled={this.state.disableContinue} onPress={this.onResult}>
                                             <Text style={styles.resultsText}>Result</Text>
                                         </TouchableOpacity>
                                     )
                                     :
                                     (  
-                                        <TouchableOpacity  onPress={this.next}>                                             
+                                        <TouchableOpacity disabled={this.state.disableContinue}  onPress={this.next}>                                             
                                             <AntDesign style={{color:blue, textAlign: 'right'}} name={'right'}  size={29} />                                            
                                         </TouchableOpacity> 
                                     )
@@ -162,12 +160,6 @@ class Card extends Component{
         )
     }
 }
-
-/*
-
-
-*/
-
 
 const styles = StyleSheet.create({
     container: {

@@ -7,6 +7,8 @@ import decks from './reducers'
 
 class App extends React.Component {
 
+  store = createStore(decks)
+
   componentDidMount(){
     notificationScheduled()
     .then((notificationSet) => {
@@ -16,11 +18,11 @@ class App extends React.Component {
         console.log('Notification already set')
       }
     })
-   
   }
+
   render() {
     return (
-      <Provider store={createStore(decks)}>
+      <Provider store={this.store}>
         <Stack/>
       </Provider>
     );

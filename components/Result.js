@@ -37,7 +37,7 @@ class Result extends Component{
 
         return(
             <View style={styles.container}>
-                <Text style={styles.text}>Result for deck {this.props.navigation.getParam('id', '0')}</Text>
+                <Text style={styles.deckName}>{this.props.navigation.getParam('id', '0')}</Text>
                 <Text style={styles.text}>{this.state.result} questions correct out of {this.state.numberQuestions}</Text>
                 <TextButton type={'standard'} onPress={this.onRestartQuiz}>Restart Quiz</TextButton>
                 <TextButton type={'standard'} onPress={this.onBackToDeck}>Back to Deck</TextButton>
@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems:'center'
+    },
+    deckName: {
+        fontSize:25,
+        color: '#A85ECC'
     },
     text: {
         fontSize:19

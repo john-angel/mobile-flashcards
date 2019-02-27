@@ -34,13 +34,26 @@ class Result extends Component{
     onBackToDeck = () => (this.props.navigation.navigate('Deck',{id:this.props.deckId}))
     
     render(){  
-
+      
         return(
             <View style={styles.container}>
-                <Text style={styles.deckName}>{this.props.navigation.getParam('id', '0')}</Text>
-                <Text style={styles.text}>{this.state.result} questions correct out of {this.state.numberQuestions}</Text>
-                <TextButton type={'standard'} onPress={this.onRestartQuiz}>Restart Quiz</TextButton>
-                <TextButton type={'standard'} onPress={this.onBackToDeck}>Back to Deck</TextButton>
+                <View style={{alignItems:'center'}}>
+                    <Text style={styles.deckName}>{this.props.navigation.getParam('id', '0')}</Text>
+                </View>
+
+                <View style={{flexDirection: 'row',justifyContent: 'flex-start'}}>
+                    <Text style={styles.item}>Questions: </Text>
+                    <Text style={styles.data}>{this.state.numberQuestions}</Text>
+                </View>
+                <View style={{flexDirection: 'row',justifyContent: 'flex-start'}}>
+                    <Text style={styles.item}>Correct: </Text>
+                    <Text style={styles.data}>{this.state.result}</Text>
+                </View>
+                <View style={{flexDirection: 'row',justifyContent: 'space-evenly',marginTop:20}}>
+                    <TextButton type={'standard'} onPress={this.onRestartQuiz}>Restart Quiz</TextButton>
+                    <TextButton type={'standard'} onPress={this.onBackToDeck}>Back to Deck</TextButton>
+                </View>
+
             </View>
         )
     }
@@ -48,12 +61,19 @@ class Result extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems:'center'
+        flexDirection: 'column',
+        justifyContent:'center'      
     },
     deckName: {
         fontSize:25,
         color: '#A85ECC'
+    },
+    item:{
+        fontSize:19,        
+        fontWeight:'bold'
+    },
+    data:{
+        fontSize:19
     },
     text: {
         fontSize:19

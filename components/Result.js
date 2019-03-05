@@ -41,15 +41,15 @@ class Result extends Component{
                     <Text style={styles.deckName}>{this.props.navigation.getParam('id', '0')}</Text>
                 </View>
 
-                <View style={{flexDirection: 'row',justifyContent: 'flex-start'}}>
+                <View style={{flexDirection: 'row',justifyContent: 'flex-start',marginTop:5}}>
                     <Text style={styles.item}>Questions: </Text>
                     <Text style={styles.data}>{this.state.numberQuestions}</Text>
                 </View>
-                <View style={{flexDirection: 'row',justifyContent: 'flex-start'}}>
+                <View style={{flexDirection: 'row',justifyContent: 'flex-start',marginTop:5}}>
                     <Text style={styles.item}>Correct: </Text>
                     <Text style={styles.data}>{this.state.result}</Text>
                 </View>
-                <View style={{flexDirection: 'row',justifyContent: 'space-evenly',marginTop:20}}>
+                <View style={{flexDirection: 'row',justifyContent: 'space-evenly',marginTop:25}}>
                     <TextButton type={'standard'} onPress={this.onRestartQuiz}>Restart Quiz</TextButton>
                     <TextButton type={'standard'} onPress={this.onBackToDeck}>Back to Deck</TextButton>
                 </View>

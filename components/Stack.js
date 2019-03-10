@@ -3,6 +3,7 @@ import TabNavigator from './TabNavigator'
 import Deck from './Deck'
 import NewQuestion from './NewQuestion'
 import Card from './Card'
+import Swipe from './Swipe'
 import Result from './Result'
 
 const Stack = createStackNavigator({
@@ -17,7 +18,7 @@ const Stack = createStackNavigator({
         screen: NewQuestion
     },
     Card: {
-        screen: Card
+        screen: Swipe
     },
     Result: {
         screen: Result

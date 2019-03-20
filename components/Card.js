@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
 import { AntDesign } from '@expo/vector-icons'
-import { white,blue,red,pink,green} from '../utils/colors'
+import { white,blue,red,pink,green,gray} from '../utils/colors'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 
@@ -15,7 +15,8 @@ class Card extends Component{
         question:'',
         answer:'',
         showAnswer: false,
-        disableContinue:true
+        disableContinue:true,
+        resultColor:gray
     }
     viewabilityConfig = {
         itemVisiblePercentThreshold: 100
@@ -64,7 +65,7 @@ class Card extends Component{
         saveOption(deckId,questionId,'correct')
         .then((option) => {
             this.props.dispatch(addAnswerSelected(deckId,questionId,option))
-            this.setState({disableContinue:false})
+            this.setState({disableContinue:false,resultColor:blue})
         })
     }
 
@@ -74,7 +75,7 @@ class Card extends Component{
         saveOption(deckId,questionId,'inCorrect')
         .then((option) => {
             this.props.dispatch(addAnswerSelected(deckId,questionId,option))
-            this.setState({disableContinue:false})
+            this.setState({disableContinue:false,resultColor:blue})
         })
     }
 
@@ -202,7 +203,7 @@ class Card extends Component{
                                     this.questionsLength === this.props.questionId + 1 ?
                                     (
                                         <TouchableOpacity disabled={this.state.disableContinue} onPress={this.onResult}>
-                                            <Text style={styles.resultsText}>Result</Text>
+                                            <Text style={[styles.resultsText,{color:this.state.resultColor}]}>Result</Text>
                                         </TouchableOpacity>
                                     )
                                     :

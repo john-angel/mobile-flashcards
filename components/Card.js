@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
 import { AntDesign } from '@expo/vector-icons'
-import { white,blue,red,pink} from '../utils/colors'
+import { white,blue,red,pink,green} from '../utils/colors'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 
 
@@ -58,7 +59,6 @@ class Card extends Component{
     }
 
     onCorrect = () => {     
-        console.log('onCorrect')   
         const {deckId, questionId} = this.props
 
         saveOption(deckId,questionId,'correct')
@@ -141,7 +141,7 @@ class Card extends Component{
     
     
     render(){
-
+//#0EB252
         const spin = this.spinValue.interpolate({
             inputRange: [0, 1],
             outputRange: ['0deg', '90deg']
@@ -180,31 +180,22 @@ class Card extends Component{
                                 centerContent={true} onScrollToIndexFailed={()=>{}} 
                                 data={[{key:'false',data:
                                     <View style={{ width: this.listItemWidth, backgroundColor:red, height:30,marginTop:'20%',alignItems:'center'}} id={'false'}>
-                                        <AntDesign style={{color:'#FF3729'}} name={'close'}  size={29} />
+                                        <AntDesign style={{color:white}} name={'close'}  size={29} />
                                     </View>},
                                     {key:'answer',data:
-                                    <View style={{ width: this.listItemWidth, backgroundColor:pink, height:30,marginTop:'20%'}} id={'answer'}>
+                                    <View style={{ width: this.listItemWidth, height:30,marginTop:'20%',flexDirection: 'row', justifyContent:'space-between'}} id={'answer'}>
+                                        <MaterialCommunityIcons style={{color:red}} size={29}  name={'chevron-double-left'}/>
                                         <Text style={styles.text}>{this.state.answer}</Text>
+                                        <MaterialCommunityIcons style={{color:green}} size={29}  name={'chevron-double-right'}/>                                                                        
                                     </View>
                                     },
                                     {key:'true',data:
-                                    <View style={{ width: this.listItemWidth, backgroundColor:blue, height:30,marginTop:'20%',alignItems:'center'}}  id={'true'}>
-                                        <AntDesign style={{color:'#0EB252'}} name={'check'}  size={29} />
+                                    <View style={{ width: this.listItemWidth, backgroundColor:green, height:30,marginTop:'20%',alignItems:'center'}}  id={'true'}>
+                                        <AntDesign style={{color:white}} name={'check'}  size={29} />
                                     </View>
                                     }]}
                                     renderItem={({ item }) => item.data}
-                            /> 
-                         
-                                       
-                           
-                            <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                                <TouchableOpacity onPress={this.onCorrect}>
-                                    <AntDesign style={{color:'#0EB252',marginTop:'20%'}} name={'check'}  size={29} />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={this.onIncorrect}>
-                                    <AntDesign style={{color:'#FF3729',marginTop:'20%'}} name={'close'}  size={29} />
-                                </TouchableOpacity>
-                            </View>
+                            />                          
                             <View>  
                                 <Text style={{ textAlign: 'center', marginTop: '20%' }}>{this.props.questionId + 1} / {this.questionsLength}</Text>
                                 {

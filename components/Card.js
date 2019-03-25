@@ -161,7 +161,7 @@ class Card extends Component{
                     )
                     : (
                         <View>
-                            <FlatList style={{marginTop:'20%'}} ref={el => this.list = el} 
+                            <FlatList ref={el => this.list = el} 
                              getItemLayout={(data, index) => (
                                 {length: this.listItemWidth, offset: this.listItemWidth * index, index}
                                 )}
@@ -190,17 +190,17 @@ class Card extends Component{
                                     renderItem={({ item }) => item.data}
                             />                          
                             <View>  
-                                <Text style={{ textAlign: 'center'}}>{this.props.questionId + 1} / {this.questionsLength}</Text>
+                                <Text style={{ textAlign: 'center', marginTop:20}}>{this.props.questionId + 1} / {this.questionsLength}</Text>
                                 {
                                     this.questionsLength === this.props.questionId + 1 ?
                                     (
-                                        <TouchableOpacity disabled={this.state.disableContinue} onPress={this.onResult}>
+                                        <TouchableOpacity style={{marginTop:20}} disabled={this.state.disableContinue} onPress={this.onResult}>
                                             <Text style={[styles.resultsText,{color:this.state.resultColor}]}>Result</Text>
                                         </TouchableOpacity>
                                     )
                                     :
                                     (  
-                                        <TouchableOpacity disabled={this.state.disableContinue}  onPress={this.next}>                                             
+                                        <TouchableOpacity style={{marginTop:20}} disabled={this.state.disableContinue}  onPress={this.next}>                                             
                                             <AntDesign style={{color:this.state.resultColor, textAlign: 'right'}} name={'right'}  size={29} />                                            
                                         </TouchableOpacity> 
                                     )
@@ -221,7 +221,6 @@ class Card extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems:'center',
         justifyContent:'center'     
     },
     text:{

@@ -3,11 +3,8 @@ import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity, ScrollView,
 import { connect } from 'react-redux'
 import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
-import { AntDesign } from '@expo/vector-icons'
-import { white,blue,red,pink,green,gray} from '../utils/colors'
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-
-
+import { AntDesign,FontAwesome } from '@expo/vector-icons'
+import { white,blue,red,green,gray} from '../utils/colors'
 
 class Card extends Component{
 
@@ -19,7 +16,8 @@ class Card extends Component{
         resultColor:gray
     }
     viewabilityConfig = {
-        itemVisiblePercentThreshold: 100
+        itemVisiblePercentThreshold: 90,
+        waitForInteraction:true
       };
 
     constructor(){ 
@@ -61,7 +59,7 @@ class Card extends Component{
 
     onCorrect = () => {     
         const {deckId, questionId} = this.props
-
+        console.log('onCorrect selected');
         saveOption(deckId,questionId,'correct')
         .then((option) => {
             this.props.dispatch(addAnswerSelected(deckId,questionId,option))
@@ -71,7 +69,7 @@ class Card extends Component{
 
     onIncorrect = () => {
         const {deckId, questionId} = this.props
-
+        console.log('Incorrect selected');
         saveOption(deckId,questionId,'inCorrect')
         .then((option) => {
             this.props.dispatch(addAnswerSelected(deckId,questionId,option))
@@ -107,42 +105,36 @@ class Card extends Component{
     }
     onResult = () => this.props.navigation.push('Result',{id:this.props.deckId}) 
 
-    onViewableItemsChanged = ({viewableItems,changed}) => {
+    onViewableItemsChanged = ({viewableItems,changed}) => {        
+
         viewableItems.forEach((item) => {
-            const { isViewable, key } = item;
-            console.log('viewableItems-isViewable:', isViewable)
+            const { key } = item;
             switch(key){
                 case 'false':
-                    console.log('viewableItems-False option selected')
                     this.onIncorrect()
                     break;
-                    case 'true':
-                    console.log('viewableItems-True option selected')
+                case 'true':
                     this.onCorrect()
                     break;
             }
         })
         changed.forEach((item) => {
-            const { isViewable, key } = item;
-            console.log('changed-isViewable:', isViewable)
+            const { key } = item;
             switch(key){
                 case 'false':
-                    console.log('changed-False option selected')
                     this.onIncorrect()
                     break;
-                    case 'true':
-                    console.log('changed-True option selected')
+                case 'true':
                     this.onCorrect()
                     break;
             }
         })
-        
-        
+
     }
     
     
     render(){
-//#0EB252
+
         const spin = this.spinValue.interpolate({
             inputRange: [0, 1],
             outputRange: ['0deg', '90deg']
@@ -157,7 +149,7 @@ class Card extends Component{
             <View style={styles.container}>
                    
               
-                <Animated.View style={[rotateYStyle,styles.card]}>
+                <Animated.View style={rotateYStyle}>
                 {
                     this.state.showAnswer === false ? (
                         <View>
@@ -169,7 +161,7 @@ class Card extends Component{
                     )
                     : (
                         <View>
-                            <FlatList ref={el => this.list = el} 
+                            <FlatList style={{marginTop:'20%'}} ref={el => this.list = el} 
                              getItemLayout={(data, index) => (
                                 {length: this.listItemWidth, offset: this.listItemWidth * index, index}
                                 )}
@@ -180,25 +172,25 @@ class Card extends Component{
                             horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false} 
                                 centerContent={true} onScrollToIndexFailed={()=>{}} 
                                 data={[{key:'false',data:
-                                    <View style={{ width: this.listItemWidth, backgroundColor:red, height:30,marginTop:'20%',alignItems:'center'}} id={'false'}>
+                                    <View style={{ width: this.listItemWidth, backgroundColor:red, height:33,alignItems:'center'}} id={'false'}>
                                         <AntDesign style={{color:white}} name={'close'}  size={29} />
                                     </View>},
                                     {key:'answer',data:
-                                    <View style={{ width: this.listItemWidth, height:30,marginTop:'20%',flexDirection: 'row', justifyContent:'space-between'}} id={'answer'}>
-                                        <MaterialCommunityIcons style={{color:red}} size={29}  name={'chevron-double-left'}/>
+                                    <View style={{ width: this.listItemWidth, height:36,flexDirection: 'row', justifyContent:'space-between'}} id={'answer'}>
+                                        <FontAwesome style={{color:green}} size={35}  name={'long-arrow-left'}/>
                                         <Text style={styles.text}>{this.state.answer}</Text>
-                                        <MaterialCommunityIcons style={{color:green}} size={29}  name={'chevron-double-right'}/>                                                                        
+                                        <FontAwesome style={{color:red}} size={35}  name={'long-arrow-right'}/>                                                                        
                                     </View>
                                     },
                                     {key:'true',data:
-                                    <View style={{ width: this.listItemWidth, backgroundColor:green, height:30,marginTop:'20%',alignItems:'center'}}  id={'true'}>
+                                    <View style={{ width: this.listItemWidth, backgroundColor:green, height:33,alignItems:'center'}}  id={'true'}>
                                         <AntDesign style={{color:white}} name={'check'}  size={29} />
                                     </View>
                                     }]}
                                     renderItem={({ item }) => item.data}
                             />                          
                             <View>  
-                                <Text style={{ textAlign: 'center', marginTop: '20%' }}>{this.props.questionId + 1} / {this.questionsLength}</Text>
+                                <Text style={{ textAlign: 'center'}}>{this.props.questionId + 1} / {this.questionsLength}</Text>
                                 {
                                     this.questionsLength === this.props.questionId + 1 ?
                                     (
@@ -209,7 +201,7 @@ class Card extends Component{
                                     :
                                     (  
                                         <TouchableOpacity disabled={this.state.disableContinue}  onPress={this.next}>                                             
-                                            <AntDesign style={{color:blue, textAlign: 'right',marginTop: '15%'}} name={'right'}  size={29} />                                            
+                                            <AntDesign style={{color:this.state.resultColor, textAlign: 'right'}} name={'right'}  size={29} />                                            
                                         </TouchableOpacity> 
                                     )
                                 }
@@ -231,13 +223,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:'center',
         justifyContent:'center'     
-    },
-    card: {   /*     
-        borderWidth: 2,
-        borderRadius: 6,
-        borderColor: '#A85ECC',
-        width: '90%',
-        height: '50%'   */     
     },
     text:{
         fontSize:19,
@@ -263,8 +248,7 @@ const styles = StyleSheet.create({
         color: '#76617F',
         textAlign: 'center',
         fontSize:19,
-        fontWeight:'bold',
-        marginTop: '15%'
+        fontWeight:'bold'
     }   
 });
 

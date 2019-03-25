@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, Animated } from 'react-native'
+import { View,Text, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import TextButton from './TextButton'
 
@@ -25,10 +25,14 @@ class Deck extends Component{
         const disableQuiz = numberOfQuestions > 0 ? false : true
         return(
             <Animated.View style={[styles.container, {opacity:fadeAnim}]}>
-                <Text style={styles.text}>Deck {deckId}</Text>
-                <Text style={styles.text}>{this.props.numberOfQuestions} questions</Text>
-                <TextButton disabled={disableQuiz} type={'standard'} onPress={() => this.props.navigation.navigate('Card', { id: deckId, question: 0 })}>Start Quiz</TextButton>
-                <TextButton type={'standard'} onPress={() => this.props.navigation.navigate('NewQuestion', { id: deckId })}>Add Card</TextButton>
+                <View style={{alignItems:'center'}}>
+                    <Text style={styles.deckName}>{deckId}</Text>
+                    <Text style={styles.text}>{this.props.numberOfQuestions} questions</Text>
+                </View>          
+                <View style={{flexDirection: 'row', justifyContent:'space-evenly'}}>
+                    <TextButton disabled={disableQuiz} type={'standard'} onPress={() => this.props.navigation.navigate('Card', { id: deckId, question: 0 })}>Start Quiz</TextButton>
+                    <TextButton type={'standard'} onPress={() => this.props.navigation.navigate('NewQuestion', { id: deckId })}>Add Card</TextButton>
+                </View>                
             </Animated.View>
         )
     }
@@ -37,8 +41,11 @@ class Deck extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems:'center'
+        justifyContent: 'center'
+    },
+    deckName: {
+        fontSize:25,
+        color: '#A85ECC'
     },
     text: {
         fontSize:19,

@@ -11,13 +11,11 @@ class Settings extends Component {
 
     render(){
         return (
-           
-                
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <Text>Alarm</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>                   
                     <Picker
                         selectedValue={this.state.hour}
-                        style={{ height: 0, width: 50 }}
+                        style={{height:130, width: 50 }}
+                        itemStyle={{height:130}}
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({ hour: itemValue })
                         }>
@@ -36,7 +34,8 @@ class Settings extends Component {
                     </Picker>
                     <Picker
                         selectedValue={this.state.minute}
-                        style={{ height: 0, width: 50 }}
+                        style={{height:130, width: 50 }}
+                        itemStyle={{height:130}}                     
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({ minute: itemValue })
                         }>
@@ -55,7 +54,8 @@ class Settings extends Component {
                     </Picker>
                     <Picker
                         selectedValue={this.state.period}
-                        style={{ height: 0, width: 50 }}
+                        style={{height:130,width: 50}}
+                        itemStyle={{height:130}}                       
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({ period: itemValue })
                         }>
@@ -63,9 +63,6 @@ class Settings extends Component {
                         <Picker.Item label="PM" value="PM" />
                     </Picker>
                 </View>
-         
-
-            
         )
     }
 

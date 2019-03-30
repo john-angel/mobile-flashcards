@@ -65,12 +65,12 @@ function buildQuestion(question,answer,option = ''){
 
 export function notificationScheduled(){
     return AsyncStorage.getItem(FLASHCARDS_NOTIFICATION)
-    .then((data) => (data === null ? false : true))
+    .then((notificationObj) => JSON.parse(notificationObj))        
     .catch((error) => false)   
     
 }
 
-export function scheduleNotification(){
+export function scheduleNotification(hour,minute){
         
     Permissions.getAsync(Permissions.NOTIFICATIONS)
     .then(status => {
@@ -78,7 +78,7 @@ export function scheduleNotification(){
         if(!status.permissions.notifications.allowsAlert){
             requestPermissions()
         }else{
-            saveNotification()
+            saveNotification(hour,minute)
         }
     })                
     .catch((error) => (console.warn('Error getting notification permission: ', error)))
@@ -97,15 +97,17 @@ function requestPermissions(){
     .catch((error) => (console.log('Error requesting permissions', error)))
 }
 
-function saveNotification(){
+function saveNotification(hour,minute){
     
     Notifications.cancelAllScheduledNotificationsAsync()
 
     let date = new Date()
-    date.setDate(date.getDate() + 1)
-    date.setHours(12)
-    date.setMinutes(0)
+    date.setDate(date.getDate())
+    date.setHours(hour)
+    date.setMinutes(minute)
     date.setMilliseconds(0)
+
+    let notificationObj = {hour: hour, minute: minute, period:hour >= 12 ? 'PM' : 'AM'}
 
     Notifications.scheduleLocalNotificationAsync(
         createNotificationObject(),
@@ -114,7 +116,7 @@ function saveNotification(){
             repeat: 'day',
         }
     ).then(id => {
-        AsyncStorage.setItem(FLASHCARDS_NOTIFICATION, JSON.stringify(true))
+        AsyncStorage.setItem(FLASHCARDS_NOTIFICATION, JSON.stringify(notificationObj))
         console.log(`Notification set for ${date.getHours()}:${date.getMinutes()}`)
     })
     .catch(error => (console.log('Error scheduling local notification:', error)))   

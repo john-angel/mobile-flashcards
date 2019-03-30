@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {Text,View,Picker} from 'react-native'
+import {Text,View,Picker,TouchableOpacity} from 'react-native'
+import {notificationScheduled,scheduleNotification} from '../utils/storage'
 
 class Settings extends Component {
 
@@ -9,9 +10,38 @@ class Settings extends Component {
         period:'AM'
     }
 
+    componentDidMount(){
+        let hour = 0;
+        
+        notificationScheduled()
+        .then((notificationObj) => {
+            if (notificationObj === null) {
+                console.log('Notification not set')
+            } else {                
+                console.log(`Notification obj: ${JSON.stringify(notificationObj)}`) 
+                
+                if(notificationObj.period === 'PM'){
+                    hour = notificationObj.hour > 12 ? notificationObj.hour - 12 : notificationObj.hour
+                }else{
+                    hour = notificationObj.hour > 0 ? notificationObj.hour : 12
+                }
+                
+                this.setState({hour:hour.toString(), minute:notificationObj.minute.toString(), period: notificationObj.period})
+            }
+        })
+    }
+
+    done = () => {
+        let hour = parseInt(this.state.hour);
+        hour = this.state.period === 'AM' ? hour !== 12 ? hour : 0  : hour !== 12 ? hour + 12 : hour
+        scheduleNotification(hour,parseInt(this.state.minute))
+    }
+
     render(){
         return (
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>                   
+            <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}> 
+                    <Text style={{fontSize:19,paddingTop:52,paddingRight:30,color:'#A85ECC'}}>Reminder</Text>                  
                     <Picker
                         selectedValue={this.state.hour}
                         style={{height:130, width: 50 }}
@@ -63,6 +93,12 @@ class Settings extends Component {
                         <Picker.Item label="PM" value="PM" />
                     </Picker>
                 </View>
+                <TouchableOpacity onPress={this.done}>
+                    <Text>Done</Text>
+                </TouchableOpacity>
+
+            </View>
+                
         )
     }
 

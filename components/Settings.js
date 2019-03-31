@@ -29,7 +29,7 @@ class Settings extends Component {
         })
     }
 
-    done = () => {
+    set = () => {
         let hour = parseInt(this.state.hour);
         hour = this.state.period === 'AM' ? hour !== 12 ? hour : 0  : hour !== 12 ? hour + 12 : hour
         scheduleNotification(hour,parseInt(this.state.minute))
@@ -91,7 +91,7 @@ class Settings extends Component {
                         <Picker.Item label="PM" value="PM" />
                     </Picker>
                 </View>
-                <TextButton type={'yes'} style={{marginTop: 10}} onPress={this.done}>Done</TextButton>
+                <TextButton type={'yes'} buttonStyle={{marginTop: 10}} onPress={this.set}>Set</TextButton>
             </View>
                 
         )

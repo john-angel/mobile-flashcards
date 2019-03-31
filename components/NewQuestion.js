@@ -29,7 +29,7 @@ class NewQuestion extends Component{
             <View style={styles.container}>
                 <TextInput defaultValue={question} style={styles.input} placeholder="Question..." onChangeText={(question) => this.setState({question})}/>
                 <TextInput defaultValue={answer} style={styles.input} placeholder="Answer..." onChangeText={(answer) => this.setState({answer})}/>
-                <TextButton disabled={disableSaving} type={'yes'} onPress={this.save}>Submit</TextButton>
+                <TextButton disabled={disableSaving} type={'yes'} buttonStyle={{marginTop: 10}} onPress={this.save}>Add</TextButton>
             </View>
         )
     }

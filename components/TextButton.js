@@ -14,14 +14,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color:green,
         fontSize: 19,
-        marginBottom:10
-    },
-    no: {
-        textAlign: 'center',
-        color: red,
-        fontSize: 19,
-        marginBottom:10
-    },
+    },    
     standard: {
         color: blue,
         fontSize: 19

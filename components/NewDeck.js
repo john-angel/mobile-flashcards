@@ -1,22 +1,27 @@
 import React, { Component } from 'react'
-import { View, TextInput, Button,Text, StyleSheet ,TouchableOpacity} from 'react-native'
-import {saveDeckTitle,getDecks,getDeck, removeDecks} from '../utils/storage'
-import { NavigationActions } from 'react-navigation'
+import { View, TextInput, StyleSheet} from 'react-native'
+import {saveDeckTitle} from '../utils/storage'
 import { connect } from 'react-redux'
+import {gray,green} from '../utils/colors'
 import { saveDeck } from '../actions/decks'
 import TextButton from './TextButton'
 
 class NewDeck extends Component{
 
     state = {
-        name: ''
+        name: '',
+        buttonColor:gray
     }
 
-    save = () => {
-        saveDeckTitle(this.state.name).then((deck)=>{
+    add = () => {
+        let name = this.state.name.trim()
+        this.setState({name})
+        
+        saveDeckTitle(name).then((deck)=>{
             this.props.dispatch(saveDeck(deck))
             this.toDeck();
         })
+        
     }
 
     toDeck = () => {  
@@ -27,15 +32,20 @@ class NewDeck extends Component{
 
     }
 
-   
-    render(){
-        const { name } = this.state;
+    onChangeName = (name) => {
+
         const disabled = !name.trim()
 
+        disabled === false ? this.setState({name:name,buttonColor:green }) : this.setState({name:name, buttonColor:gray })
+
+    }
+
+   
+    render(){
         return(
             <View style={styles.container}>
-                <TextInput style={styles.input} placeholder="Deck name..." value={this.state.name} onChangeText={(name) => this.setState({ name })} />
-                <TextButton disabled={disabled} type={'yes'} style={{padding: 10}} onPress={this.save}>Create Deck</TextButton>
+                <TextInput style={styles.input} value={this.state.name} placeholder="Deck name..." onChangeText={(name) => this.onChangeName(name)} />
+                <TextButton disabled={this.state.buttonColor === gray} type={'yes'} buttonStyle={{marginTop: 10}} textStyle={{color:this.state.buttonColor}} onPress={this.add}>Add</TextButton>
             </View>
         )
     }

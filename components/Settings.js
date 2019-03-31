@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {Text,View,Picker,TouchableOpacity} from 'react-native'
+import {Text,View,Picker} from 'react-native'
+import TextButton from './TextButton'
 import {notificationScheduled,scheduleNotification} from '../utils/storage'
 
 class Settings extends Component {
@@ -15,10 +16,7 @@ class Settings extends Component {
         
         notificationScheduled()
         .then((notificationObj) => {
-            if (notificationObj === null) {
-                console.log('Notification not set')
-            } else {                
-                console.log(`Notification obj: ${JSON.stringify(notificationObj)}`) 
+            if (notificationObj !== null) {
                 
                 if(notificationObj.period === 'PM'){
                     hour = notificationObj.hour > 12 ? notificationObj.hour - 12 : notificationObj.hour
@@ -93,10 +91,7 @@ class Settings extends Component {
                         <Picker.Item label="PM" value="PM" />
                     </Picker>
                 </View>
-                <TouchableOpacity onPress={this.done}>
-                    <Text>Done</Text>
-                </TouchableOpacity>
-
+                <TextButton type={'yes'} style={{marginTop: 10}} onPress={this.done}>Done</TextButton>
             </View>
                 
         )

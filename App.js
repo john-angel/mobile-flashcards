@@ -2,7 +2,6 @@ import React from 'react';
 import Stack from './components/Stack'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import {scheduleNotification, notificationScheduled} from './utils/storage'
 import decks from './reducers'
 
 class App extends React.Component {
@@ -11,9 +10,9 @@ class App extends React.Component {
   
   render() {
     return (
-      <Provider store={this.store}>
-        <Stack/>
-      </Provider>
+        <Provider store={this.store}>
+          <Stack/>
+        </Provider>      
     );
   }
 }

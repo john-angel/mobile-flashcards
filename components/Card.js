@@ -5,6 +5,7 @@ import { addAnswerSelected } from '../actions/questions'
 import {getDeck, saveOption} from '../utils/storage'
 import { AntDesign,FontAwesome } from '@expo/vector-icons'
 import { white,blue,red,green,gray} from '../utils/colors'
+import TextButton from './TextButton'
 
 class Card extends Component{
 
@@ -144,7 +145,7 @@ class Card extends Component{
             transform: [{ rotateY: spin }]
         }
 
-        
+    
         return(
             <View style={styles.container}>
                    
@@ -152,11 +153,9 @@ class Card extends Component{
                 <Animated.View style={rotateYStyle}>
                 {
                     this.state.showAnswer === false ? (
-                        <View>
+                        <View style={{alignItems:'center'}}>
                             <Text style={[styles.text,{marginTop:'20%'}]}>{this.state.question}</Text>
-                            <TouchableOpacity style={styles.answerButton}  onPress={this.onShowAnswer}>
-                                <Text style={styles.answerButtonText}>Answer</Text>
-                            </TouchableOpacity>
+                            <TextButton type={'standard'} buttonStyle={{width:70,marginTop:20}} textStyle={{ textAlign:'center'}} onPress={this.onShowAnswer}>Answer</TextButton>
                         </View>
                     )
                     : (
@@ -194,15 +193,19 @@ class Card extends Component{
                                 {
                                     this.questionsLength === this.props.questionId + 1 ?
                                     (
-                                        <TouchableOpacity style={{marginTop:20}} disabled={this.state.disableContinue} onPress={this.onResult}>
-                                            <Text style={[styles.resultsText,{color:this.state.resultColor}]}>Result</Text>
-                                        </TouchableOpacity>
+                                        <View style={{alignItems:'center'}}>
+                                            <TextButton disabled={this.state.disableContinue} type={'standard'} buttonStyle={{width:70,marginTop:20}} 
+                                            textStyle={{color:this.state.resultColor, textAlign:'center'}} onPress={this.onResult}>Result</TextButton>
+                                        </View>
+                                                                                
                                     )
                                     :
-                                    (  
-                                        <TouchableOpacity style={{marginTop:20}} disabled={this.state.disableContinue}  onPress={this.next}>                                             
-                                            <AntDesign style={{color:this.state.resultColor, textAlign: 'right'}} name={'right'}  size={29} />                                            
-                                        </TouchableOpacity> 
+                                    (
+                                        <View style={{alignItems:'flex-end'}}>
+                                            <TouchableOpacity style={{width:30,marginTop:20}} disabled={this.state.disableContinue}  onPress={this.next}>                                             
+                                                <AntDesign style={{color:this.state.resultColor, textAlign: 'right'}} name={'right'}  size={29} />                                            
+                                            </TouchableOpacity> 
+                                        </View>
                                     )
                                 }
                             </View>
@@ -225,30 +228,8 @@ const styles = StyleSheet.create({
     },
     text:{
         fontSize:19,
-        textAlign:'center'
-       
-    },
-    answerButton:{
-        backgroundColor:'#76617F',
-        borderRadius: 6,
-        marginTop:'20%',
-        marginRight:'30%',
-        marginLeft:'30%'       
-    },
-    answerButtonText:{
-        color:white,
-        fontWeight:'bold',
-        fontSize: 20,        
-        textAlign:'center',
-        paddingTop:5,
-        paddingBottom:5
-    },
-    resultsText:{
-        color: '#76617F',
-        textAlign: 'center',
-        fontSize:19,
-        fontWeight:'bold'
-    }   
+        textAlign:'center'       
+    } 
 });
 
 

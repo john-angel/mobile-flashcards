@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View,Text, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
+import { purple } from '../utils/colors'
 import TextButton from './TextButton'
 
 class Deck extends Component{
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     },
     deckName: {
         fontSize:25,
-        color: '#A85ECC'
+        color: purple
     },
     text: {
         fontSize:19,

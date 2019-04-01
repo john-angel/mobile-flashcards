@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import {getDeck} from '../utils/storage'
+import {purple} from '../utils/colors'
 import TextButton from './TextButton'
 
 class Result extends Component{
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     },
     deckName: {
         fontSize:25,
-        color: '#A85ECC'
+        color: purple
     },
     item:{
         fontSize:19,        

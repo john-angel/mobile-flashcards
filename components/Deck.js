@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View,Text, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
-import { purple } from '../utils/colors'
+import { purple,gray,blue } from '../utils/colors'
 import TextButton from './TextButton'
 
 class Deck extends Component{
@@ -22,8 +22,9 @@ class Deck extends Component{
   
     render(){
         let { fadeAnim } = this.state;
-        const { deckId,numberOfQuestions } = this.props
-        const disableQuiz = numberOfQuestions > 0 ? false : true
+        const { deckId,numberOfQuestions } = this.props;
+        const disableQuiz = numberOfQuestions > 0 ? false : true;
+        const buttonColor = disableQuiz ? gray : blue;
         return(
             <Animated.View style={[styles.container, {opacity:fadeAnim}]}>
                 <View style={{alignItems:'center'}}>
@@ -31,8 +32,8 @@ class Deck extends Component{
                     <Text style={styles.text}>{this.props.numberOfQuestions} questions</Text>
                 </View>          
                 <View style={{flexDirection: 'row', justifyContent:'space-evenly'}}>
-                    <TextButton disabled={disableQuiz} type={'standard'} onPress={() => this.props.navigation.navigate('Card', { id: deckId, question: 0 })}>Start Quiz</TextButton>
-                    <TextButton type={'standard'} onPress={() => this.props.navigation.navigate('NewQuestion', { id: deckId })}>Add Card</TextButton>
+                    <TextButton disabled={disableQuiz} type={'standard'} textStyle={{color: buttonColor}} onPress={() => this.props.navigation.navigate('Card', { id: deckId, question: 0 })}>Start quiz</TextButton>
+                    <TextButton type={'standard'} onPress={() => this.props.navigation.navigate('NewQuestion', { id: deckId })}>Add card</TextButton>
                 </View>                
             </Animated.View>
         )

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
 import {saveQuestion} from '../utils/storage'
 import { connect } from 'react-redux'
+import {gray,green} from '../utils/colors'
 import { addQuestion } from '../actions/questions'
 import TextButton from './TextButton'
 
@@ -29,7 +30,7 @@ class NewQuestion extends Component{
             <View style={styles.container}>
                 <TextInput defaultValue={question} style={styles.input} placeholder="Question..." onChangeText={(question) => this.setState({question})}/>
                 <TextInput defaultValue={answer} style={styles.input} placeholder="Answer..." onChangeText={(answer) => this.setState({answer})}/>
-                <TextButton disabled={disableSaving} type={'yes'} buttonStyle={{marginTop: 10}} onPress={this.save}>Add</TextButton>
+                <TextButton disabled={disableSaving} type={'yes'} buttonStyle={{marginTop: 10}} textStyle={{color:disableSaving ? gray : green}} onPress={this.save}>Add</TextButton>
             </View>
         )
     }
